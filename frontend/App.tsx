@@ -29,8 +29,6 @@ export default function App() {
     Inter_900Black,
   });
 
-
-
   if (fontsLoaded) {
     return (
       <SafeAreaView style={{ flex: 1 }}>

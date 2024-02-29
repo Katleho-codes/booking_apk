@@ -1,16 +1,14 @@
-import { View, Text, TextInput } from 'react-native'
+import { View, Text, TextInput, Pressable } from 'react-native'
 import React, { useState } from 'react'
 import Container from '../components/Container'
 import { getCustomerRepairshpr } from '../hooks/useRepairApi'
 import useDebounce from '../hooks/useDebounce'
 
-
-export default function Home() {
+export default function BookingForm() {
     const [searchCustomer, setSearchCustomer] = useState("")
     const debouncedCustomerSearch = useDebounce(searchCustomer, 400);
 
     const { searchedCustomerFirstname, searchedCustomerLastname, searchedCustomerEmail, searchedCustomerMobile, searchedCustomerAddress, searchedCustomerAddressTwo, searchedCustomerCity, searchedCustomerProvince, searchedCustomerZip } = getCustomerRepairshpr({ debouncedCustomerSearch })
-
     return (
         <Container>
             <View
@@ -28,7 +26,7 @@ export default function Home() {
                     Search customer
                 </Text>
                 <TextInput
-                    placeholder='Please search using email'
+                    
                     style={{
                         borderWidth: 1,
                         paddingHorizontal: 10,
@@ -38,20 +36,29 @@ export default function Home() {
                         fontFamily: "Inter_500Medium",
                         width: "100%",
                     }}
-                    value={searchCustomer?.toLowerCase()}
+                    value={searchCustomer}
                     onChangeText={text => setSearchCustomer(text)}
                     editable={true}
 
                 />
             </View>
             {searchedCustomerEmail && searchCustomer?.toLowerCase() === searchedCustomerEmail ? (
-                <View>
-                    <Text>{searchedCustomerEmail}</Text>
-                </View>
+                <>
+                    <View>
+                        <Text>{searchedCustomerFirstname} {searchedCustomerLastname}</Text>
+                        <Text>{searchedCustomerMobile}</Text>
+                        <Text>{searchedCustomerAddress} {searchedCustomerAddressTwo}</Text>
+                        <Text>{searchedCustomerCity} {searchedCustomerProvince}</Text>
+                        <Text>{searchedCustomerZip}</Text>
+                    </View>
 
+                    <Pressable>
+                        <Text>Add</Text>
+                    </Pressable>
+                </>
             ) : ""}
 
-            
+
         </Container>
     )
 }
