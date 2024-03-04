@@ -1,5 +1,5 @@
-import { View, Text, TextInput, Switch, Button, ScrollView, Pressable } from 'react-native'
-import React, { useCallback, useMemo, useRef } from 'react';
+import { View, Text, TextInput, Switch, Button, ScrollView, Pressable, TouchableOpacity } from 'react-native'
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Dropdown } from "react-native-element-dropdown";
 import CustomModal from '../../components/CustomModal';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -11,6 +11,11 @@ import {
 import CustomButton from '../../components/Button';
 import { Colors } from '../../utils/colors';
 import SectionHeaderTitle from '../../components/SectionHeaderTitle';
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { CameraView, useCameraPermissions, BarcodeScanningResult } from 'expo-camera/next';
+import BackupTerms from '../BackupTerms';
+import Checkbox from 'expo-checkbox';
 
 type TDeviceInformation = {
     model: string;
@@ -25,8 +30,9 @@ type TDeviceInformation = {
     setAssetType: (e: string) => void;
     isAssetDropdownFocus: boolean;
     setIsAssetDropdownFocus: (e: boolean) => void;
-    isBackUpNeedSwitchEnabled: boolean;
-    setIsBackUpNeedSwitchEnabled: (e: boolean) => void;
+    isBackUpNeedCheckboxEnabled: boolean;
+    setIsBackUpNeedCheckboxEnabled: (e: boolean) => void;
+
 }
 
 
@@ -36,234 +42,210 @@ const assetTypes = [
     { label: "Phone, tablet, buds, smart watch", value: "HHP" },
 ]
 
-export default function DeviceInformation({ model, setModel, make, setMake, serialNumber, setSerialNumber, imei, setImei, isAssetDropdownFocus, setIsAssetDropdownFocus, assetType, setAssetType, isBackUpNeedSwitchEnabled, setIsBackUpNeedSwitchEnabled }: TDeviceInformation) {
-    // ref
-    const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
-    // variables
-    const snapPoints = useMemo(() => ['25%', '50%', '100%'], []);
 
-    // callbacks
-    const handlePresentModalPress = useCallback(() => {
-        bottomSheetModalRef.current?.present();
-    }, []);
-    const handleSheetChanges = useCallback((index: number) => {
-        console.log('handleSheetChanges', index);
-    }, []);
+export default function DeviceInformation({ model, setModel, make, setMake, serialNumber, setSerialNumber, imei, setImei, isAssetDropdownFocus, setIsAssetDropdownFocus, assetType, setAssetType, isBackUpNeedCheckboxEnabled, setIsBackUpNeedCheckboxEnabled }: TDeviceInformation) {
+    // Navigation hook
+    const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
-    const openModelScanner = async () => {
-        // console.log("clicked")
+    const [isBackUpPriceAgreed, setIsBackUpPriceAgreed] = useState(false);
+
+    const handlePresentModalPress = () => {
+        navigation.navigate("BackupTerms")
     }
+
     return (
-        <GestureHandlerRootView style={{ flex: 1 }}>
-            <ScrollView>
-                <SectionHeaderTitle title='Device Information' />
-                <View
-                    style={{
-                        marginVertical: 4,
-                        flexDirection: "row",
-                        alignItems: "center",
-                        borderWidth: 1,
 
-                        borderColor: "#eee",
-                        borderRadius: 2,
-                        width: "100%",
-
-                    }}
-                >
-                    <TextInput
-                        editable={false}
-                        value={model}
-                        onChangeText={setModel}
-                        placeholder='Model'
-                        style={{
-                            paddingHorizontal: 10,
-                            paddingVertical: 12,
-                            width: "100%"
-                        }}
-
-                    />
-                    <Pressable onPress={openModelScanner} style={{
-                        position: 'absolute',
-                        alignSelf: 'center',
-                        right: 5,
-                    }}>
-                        <Text>Scan</Text>
-                    </Pressable>
-                </View>
-                <View
-                    style={{
-                        marginVertical: 4,
-                    }}
-                >
-                    <TextInput
-                        placeholder='Make'
-                        style={{
-                            borderWidth: 1,
-                            paddingHorizontal: 10,
-                            paddingVertical: 12,
-                            borderColor: "#eee",
-                            borderRadius: 2,
-                            fontFamily: "Inter_500Medium",
-                            width: "100%",
-                        }}
-                        editable={false}
-                        value={make}
-                        onChangeText={setMake}
-                    />
-                </View>
-                <View
-                    style={{
-                        marginVertical: 4,
-                        flexDirection: "row",
-                        alignItems: "center",
-                        borderWidth: 1,
-
-                        borderColor: "#eee",
-                        borderRadius: 2,
-                        width: "100%",
-
-                    }}
-                >
-                    <TextInput
-                        editable={false}
-                        value={serialNumber}
-                        onChangeText={setSerialNumber}
-                        placeholder='Serial Number'
-                        style={{
-                            paddingHorizontal: 10,
-                            paddingVertical: 12,
-                            width: "100%"
-                        }}
-
-                    />
-                    <Pressable onPress={openModelScanner} style={{
-                        position: 'absolute',
-                        alignSelf: 'center',
-                        right: 5,
-                    }}>
-                        <Text>Scan</Text>
-                    </Pressable>
-                </View>
-                <View
-                    style={{
-                        marginVertical: 4,
-                        flexDirection: "row",
-                        alignItems: "center",
-                        borderWidth: 1,
-
-                        borderColor: "#eee",
-                        borderRadius: 2,
-                        width: "100%",
-
-                    }}
-                >
-                    <TextInput
-                        editable={false}
-                        value={imei}
-                        onChangeText={setImei}
-                        placeholder='IMEI'
-                        style={{
-                            paddingHorizontal: 10,
-                            paddingVertical: 12,
-                            width: "100%"
-                        }}
-
-                    />
-                    <Pressable onPress={openModelScanner} style={{
-                        position: 'absolute',
-                        alignSelf: 'center',
-                        right: 5,
-                    }}>
-                        <Text>Scan</Text>
-                    </Pressable>
-                </View>
-                <View
-                    style={{
-                        marginVertical: 4,
-                    }}
-                >
-                    {/* Dropdown menu */}
-                    <Dropdown
-                        style={[
-                            {
-                                borderColor: "#eee",
-                                borderWidth: 1,
-                                borderRadius: 2,
-                                paddingHorizontal: 10,
-                                paddingVertical: 12,
-
-                                // color: "#0d0d0d",
-                            },
-                            isAssetDropdownFocus && { borderColor: "blue" },
-                        ]}
-
-                        // iconStyle={mainStyles.iconStyle}
-                        fontFamily='Inter_400Regular'
-                        data={assetTypes}
-                        search
-                        maxHeight={300}
-                        labelField="label"
-                        valueField="value"
-                        placeholder={!isAssetDropdownFocus ? "What are you booking?" : "..."}
-                        searchPlaceholder="Search..."
-                        value={assetType}
-                        onFocus={() => setIsAssetDropdownFocus(true)}
-                        onBlur={() => setIsAssetDropdownFocus(false)}
-                        onChange={(item: any) => {
-                            setAssetType(item.value);
-                            setIsAssetDropdownFocus(false);
-                        }}
-                    />
-                </View>
-                <View style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
+        <ScrollView>
+            <SectionHeaderTitle title='Device Information' />
+            <View
+                style={{
                     marginVertical: 4,
+                    flexDirection: "row",
+                    alignItems: "center",
+                    borderWidth: 1,
 
+                    borderColor: "#eee",
+                    borderRadius: 2,
+                    width: "100%",
+
+                }}
+            >
+                <TextInput
+                    editable={false}
+                    value={model}
+                    onChangeText={setModel}
+                    placeholder='Model'
+                    style={{
+                        paddingHorizontal: 10,
+                        paddingVertical: 12,
+                        width: "100%"
+                    }}
+
+                />
+                <Pressable onPress={() => { }} style={{
+                    position: 'absolute',
+                    alignSelf: 'center',
+                    right: 5,
                 }}>
-                    <Text style={{
+                    <Text>Scan</Text>
+                </Pressable>
+            </View>
+            <View
+                style={{
+                    marginVertical: 4,
+                }}
+            >
+                <TextInput
+                    placeholder='Make'
+                    style={{
+                        borderWidth: 1,
+                        paddingHorizontal: 10,
+                        paddingVertical: 12,
+                        borderColor: "#eee",
+                        borderRadius: 2,
                         fontFamily: "Inter_500Medium",
-                        color: "#0d0d0d",
-                        paddingVertical: 4,
-                    }}>Do you require backup for your device?</Text>
-                    <Switch
-                        trackColor={{ false: '#767577', true: '#81b0ff' }}
-                        thumbColor={isBackUpNeedSwitchEnabled ? '#f5dd4b' : '#f4f3f4'}
-                        ios_backgroundColor="#3e3e3e"
-                        onValueChange={setIsBackUpNeedSwitchEnabled}
-                        value={isBackUpNeedSwitchEnabled}
-                    />
-                </View>
+                        width: "100%",
+                    }}
+                    editable={false}
+                    value={make}
+                    onChangeText={setMake}
+                />
+            </View>
+            <View
+                style={{
+                    marginVertical: 4,
+                    flexDirection: "row",
+                    alignItems: "center",
+                    borderWidth: 1,
 
-                <BottomSheetModalProvider>
-                    <View>
-                        <CustomButton
-                            onPress={handlePresentModalPress}
-                            text="Read backup terms and conditions"
-                            fontSize={14}
-                            buttonBgColor={`${Colors.black}`}
-                            pressedButtonBgColor={`${Colors.lightGrey}`}
-                        />
-                        <BottomSheetModal
-                            ref={bottomSheetModalRef}
-                            index={1}
-                            snapPoints={snapPoints}
-                            onChange={handleSheetChanges}
-                            detached={true}
-                        >
-                            <BottomSheetView style={{
-                                flex: 1,
-                                alignItems: 'center',
-                            }}>
-                                <Text>Awesome 🎉</Text>
-                            </BottomSheetView>
-                        </BottomSheetModal>
-                    </View>
-                </BottomSheetModalProvider>
-            </ScrollView>
-        </GestureHandlerRootView >
+                    borderColor: "#eee",
+                    borderRadius: 2,
+                    width: "100%",
+
+                }}
+            >
+                <TextInput
+                    editable={false}
+                    value={serialNumber}
+                    onChangeText={setSerialNumber}
+                    placeholder='Serial Number'
+                    style={{
+                        paddingHorizontal: 10,
+                        paddingVertical: 12,
+                        width: "100%"
+                    }}
+
+                />
+                <Pressable onPress={() => { }} style={{
+                    position: 'absolute',
+                    alignSelf: 'center',
+                    right: 5,
+                }}>
+                    <Text>Scan</Text>
+                </Pressable>
+            </View>
+            <View
+                style={{
+                    marginVertical: 4,
+                    flexDirection: "row",
+                    alignItems: "center",
+                    borderWidth: 1,
+
+                    borderColor: "#eee",
+                    borderRadius: 2,
+                    width: "100%",
+
+                }}
+            >
+                <TextInput
+                    editable={false}
+                    value={imei}
+                    onChangeText={setImei}
+                    placeholder='IMEI'
+                    style={{
+                        paddingHorizontal: 10,
+                        paddingVertical: 12,
+                        width: "100%"
+                    }}
+
+                />
+                <Pressable onPress={() => { }} style={{
+                    position: 'absolute',
+                    alignSelf: 'center',
+                    right: 5,
+                }}>
+                    <Text>Scan</Text>
+                </Pressable>
+            </View>
+            <View
+                style={{
+                    marginVertical: 4,
+                }}
+            >
+                {/* Dropdown menu */}
+                <Dropdown
+                    style={[
+                        {
+                            borderColor: "#eee",
+                            borderWidth: 1,
+                            borderRadius: 2,
+                            paddingHorizontal: 10,
+                            paddingVertical: 12,
+
+                            // color: "#0d0d0d",
+                        },
+                        isAssetDropdownFocus && { borderColor: `${Colors.blue}` },
+                    ]}
+
+                    // iconStyle={mainStyles.iconStyle}
+                    fontFamily='Inter_400Regular'
+                    data={assetTypes}
+                    search
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    placeholder={!isAssetDropdownFocus ? "What are you booking?" : "..."}
+                    searchPlaceholder="Search..."
+                    value={assetType}
+                    onFocus={() => setIsAssetDropdownFocus(true)}
+                    onBlur={() => setIsAssetDropdownFocus(false)}
+                    onChange={(item: any) => {
+                        setAssetType(item.value);
+                        setIsAssetDropdownFocus(false);
+                    }}
+                />
+            </View>
+            <View style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginVertical: 4,
+
+            }}>
+                <Text style={{
+                    fontFamily: "Inter_500Medium",
+                    color: "#0d0d0d",
+                    paddingVertical: 4,
+                }}>Do you require backup for your device?</Text>
+                <Checkbox color={isBackUpNeedCheckboxEnabled ? `${Colors.lightBlue}` : undefined} value={isBackUpNeedCheckboxEnabled} onValueChange={setIsBackUpNeedCheckboxEnabled} />
+
+            </View>
+
+
+            <View>
+                <CustomButton
+                    onPress={handlePresentModalPress}
+                    text="backup terms and conditions"
+                    fontSize={14}
+                    buttonBgColor={`${Colors.black}`}
+                    pressedButtonBgColor={`${Colors.lightGrey}`}
+                />
+                {/* <BackupTerms /> */}
+            </View>
+
+        </ScrollView>
+
     )
 }

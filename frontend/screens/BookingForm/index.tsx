@@ -11,6 +11,7 @@ import CustomButton from '../../components/Button'
 import { Colors } from '../../utils/colors'
 import HeaderSteps from '../../components/HeaderSteps'
 import BarcodeScanner from '../../components/BarcodeScanner'
+import Terms from '../Terms'
 
 export default function BookingForm() {
     const [searchCustomer, setSearchCustomer] = useState("")
@@ -31,7 +32,7 @@ export default function BookingForm() {
     const [serialNumber, setSerialNumber] = useState("")
     const [isAssetDropdownFocus, setIsAssetDropdownFocus] = useState(false)
     const [assetType, setAssetType] = useState("");
-    const [isBackUpNeedSwitchEnabled, setIsBackUpNeedSwitchEnabled] = useState(false)
+    const [isBackUpNeedCheckboxEnabled, setIsBackUpNeedCheckboxEnabled] = useState(false)
 
 
     const [fault, setFault] = useState("")
@@ -39,7 +40,7 @@ export default function BookingForm() {
     const [faultOccurenceFocus, setFaultOccurenceFocus] = useState(false)
 
 
-    const togglesetIsBackUpNeedSwitchEnabled = () => setIsBackUpNeedSwitchEnabled(previousState => !previousState);
+
 
     const submitData = async () => {
         const values = {
@@ -83,22 +84,22 @@ export default function BookingForm() {
 
             />,
 
-            <DeviceInformation
-                model={model}
-                setModel={e => setModel(e)}
-                make={make}
-                setMake={e => setMake(e)}
-                serialNumber={serialNumber}
-                setSerialNumber={e => setSerialNumber(e)}
-                imei={imei}
-                setImei={e => setImei(e)}
-                assetType={assetType}
-                setAssetType={e => setAssetType(e)}
-                isAssetDropdownFocus={isAssetDropdownFocus}
-                setIsAssetDropdownFocus={e => setIsAssetDropdownFocus(e)}
-                isBackUpNeedSwitchEnabled={isBackUpNeedSwitchEnabled}
-                setIsBackUpNeedSwitchEnabled={togglesetIsBackUpNeedSwitchEnabled}
-            />,
+            // <DeviceInformation
+            //     model={model}
+            //     setModel={e => setModel(e)}
+            //     make={make}
+            //     setMake={e => setMake(e)}
+            //     serialNumber={serialNumber}
+            //     setSerialNumber={e => setSerialNumber(e)}
+            //     imei={imei}
+            //     setImei={e => setImei(e)}
+            //     assetType={assetType}
+            //     setAssetType={e => setAssetType(e)}
+            //     isAssetDropdownFocus={isAssetDropdownFocus}
+            //     setIsAssetDropdownFocus={e => setIsAssetDropdownFocus(e)}
+            //     isBackUpNeedCheckboxEnabled={isBackUpNeedCheckboxEnabled}
+            //     setIsBackUpNeedCheckboxEnabled={setIsBackUpNeedCheckboxEnabled}
+            // />,
 
             <DeviceInspection
                 fault={fault}
@@ -107,8 +108,12 @@ export default function BookingForm() {
                 setFaultOccurence={e => setFaultOccurence(e)}
                 faultOccurenceFocus={faultOccurenceFocus}
                 setFaultOccurenceFocus={e => setFaultOccurenceFocus(e)}
+                assetType={assetType}
+                setAssetType={e => setAssetType(e)}
+                isAssetDropdownFocus={isAssetDropdownFocus}
+                setIsAssetDropdownFocus={e => setIsAssetDropdownFocus(e)}
             />,
-            <BarcodeScanner />
+            <Terms />
         ]);
 
     async function createTicket() { }

@@ -1,6 +1,7 @@
 import { View, Text, TextInput, ScrollView } from 'react-native'
 import React from 'react'
 import SectionHeaderTitle from '../../components/SectionHeaderTitle';
+import { Colors } from '../../utils/colors';
 
 
 type TCustomerDetails = {
@@ -43,7 +44,7 @@ export default function CustomerDetails({ firstname, setFirstname, lastname, set
                     marginVertical: 4,
                 }}
             >
-                <Text
+                {/* <Text
                     style={{
                         fontFamily: "Inter_500Medium",
                         color: "#0d0d0d",
@@ -51,7 +52,7 @@ export default function CustomerDetails({ firstname, setFirstname, lastname, set
                     }}
                 >
                     First name
-                </Text>
+                </Text> */}
                 <TextInput
 
                     style={{
@@ -66,6 +67,8 @@ export default function CustomerDetails({ firstname, setFirstname, lastname, set
                     editable={true}
                     value={firstname}
                     onChangeText={setFirstname}
+                    placeholder='First name'
+                    placeholderTextColor={`${Colors.grey}`}
                 />
             </View>
             <View
@@ -73,15 +76,7 @@ export default function CustomerDetails({ firstname, setFirstname, lastname, set
                     marginVertical: 4,
                 }}
             >
-                <Text
-                    style={{
-                        fontFamily: "Inter_500Medium",
-                        color: "#0d0d0d",
-                        paddingVertical: 4,
-                    }}
-                >
-                    Last name
-                </Text>
+
                 <TextInput
 
                     style={{
@@ -96,6 +91,8 @@ export default function CustomerDetails({ firstname, setFirstname, lastname, set
                     editable={true}
                     value={lastname}
                     onChangeText={setLastname}
+                    placeholder='Last name'
+                    placeholderTextColor={`${Colors.grey}`}
                 />
             </View>
             <View
@@ -103,15 +100,6 @@ export default function CustomerDetails({ firstname, setFirstname, lastname, set
                     marginVertical: 4,
                 }}
             >
-                <Text
-                    style={{
-                        fontFamily: "Inter_500Medium",
-                        color: "#0d0d0d",
-                        paddingVertical: 4,
-                    }}
-                >
-                    Email address
-                </Text>
                 <TextInput
 
                     style={{
@@ -126,6 +114,8 @@ export default function CustomerDetails({ firstname, setFirstname, lastname, set
                     editable={true}
                     value={email}
                     onChangeText={setEmail}
+                    placeholder='Email address'
+                    placeholderTextColor={`${Colors.grey}`}
                 />
             </View>
             <View
@@ -133,15 +123,6 @@ export default function CustomerDetails({ firstname, setFirstname, lastname, set
                     marginVertical: 4,
                 }}
             >
-                <Text
-                    style={{
-                        fontFamily: "Inter_500Medium",
-                        color: "#0d0d0d",
-                        paddingVertical: 4,
-                    }}
-                >
-                    Address Line 1
-                </Text>
                 <TextInput
 
                     style={{
@@ -156,6 +137,8 @@ export default function CustomerDetails({ firstname, setFirstname, lastname, set
                     editable={true}
                     value={address1}
                     onChangeText={setAddress1}
+                    placeholder='Address Line 1'
+                    placeholderTextColor={`${Colors.grey}`}
                 />
             </View>
             <View
@@ -163,15 +146,7 @@ export default function CustomerDetails({ firstname, setFirstname, lastname, set
                     marginVertical: 4,
                 }}
             >
-                <Text
-                    style={{
-                        fontFamily: "Inter_500Medium",
-                        color: "#0d0d0d",
-                        paddingVertical: 4,
-                    }}
-                >
-                    Address Line 2
-                </Text>
+
                 <TextInput
 
                     style={{
@@ -186,6 +161,8 @@ export default function CustomerDetails({ firstname, setFirstname, lastname, set
                     editable={true}
                     value={address2}
                     onChangeText={setAddress2}
+                    placeholder='Address Line 2'
+                    placeholderTextColor={`${Colors.grey}`}
                 />
             </View>
             <View
@@ -193,15 +170,7 @@ export default function CustomerDetails({ firstname, setFirstname, lastname, set
                     marginVertical: 4,
                 }}
             >
-                <Text
-                    style={{
-                        fontFamily: "Inter_500Medium",
-                        color: "#0d0d0d",
-                        paddingVertical: 4,
-                    }}
-                >
-                    City
-                </Text>
+
                 <TextInput
 
                     style={{
@@ -216,6 +185,8 @@ export default function CustomerDetails({ firstname, setFirstname, lastname, set
                     editable={true}
                     value={city}
                     onChangeText={setCity}
+                    placeholder='City'
+                    placeholderTextColor={`${Colors.grey}`}
                 />
             </View>
             <View
@@ -223,15 +194,6 @@ export default function CustomerDetails({ firstname, setFirstname, lastname, set
                     marginVertical: 4,
                 }}
             >
-                <Text
-                    style={{
-                        fontFamily: "Inter_500Medium",
-                        color: "#0d0d0d",
-                        paddingVertical: 4,
-                    }}
-                >
-                    Province
-                </Text>
                 <TextInput
 
                     style={{
@@ -246,6 +208,8 @@ export default function CustomerDetails({ firstname, setFirstname, lastname, set
                     editable={true}
                     value={province}
                     onChangeText={setProvince}
+                    placeholder='Province'
+                    placeholderTextColor={`${Colors.grey}`}
                 />
             </View>
             <View
@@ -253,15 +217,6 @@ export default function CustomerDetails({ firstname, setFirstname, lastname, set
                     marginVertical: 4,
                 }}
             >
-                <Text
-                    style={{
-                        fontFamily: "Inter_500Medium",
-                        color: "#0d0d0d",
-                        paddingVertical: 4,
-                    }}
-                >
-                    Zip/Postal code
-                </Text>
                 <TextInput
 
                     style={{
@@ -278,6 +233,8 @@ export default function CustomerDetails({ firstname, setFirstname, lastname, set
                     onChangeText={setZip}
                     keyboardType="numeric"
                     inputMode='numeric'
+                    placeholder='Zip/Postal code'
+                    placeholderTextColor={`${Colors.grey}`}
                 />
             </View>
 

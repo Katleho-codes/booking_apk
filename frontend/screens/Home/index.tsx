@@ -4,6 +4,7 @@ import Container from '../../components/Container'
 import { getCustomerRepairshpr } from '../../hooks/useRepairApi'
 import useDebounce from '../../hooks/useDebounce'
 import CustomModal from '../../components/CustomModal'
+import axios from 'axios';
 
 import { Alert, Modal, StyleSheet, Text, Pressable, View, StatusBar, Image, Dimensions } from 'react-native';
 import CustomButton from '../../components/Button'
@@ -18,8 +19,31 @@ export default function Home() {
     const { searchedCustomerFirstname, searchedCustomerLastname, searchedCustomerEmail, searchedCustomerMobile, searchedCustomerAddress, searchedCustomerAddressTwo, searchedCustomerCity, searchedCustomerProvince, searchedCustomerZip } = getCustomerRepairshpr({ debouncedCustomerSearch })
     // Navigation hook
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
-    const GotoNext = () => {
-        navigation.navigate("Prompts")
+
+    const sendNewEntry = async () => {
+        // The job status will always be "New" we don't need state for that, nor an input field
+        const unitStatus = "New"
+        const response = await axios.post(`${process.env.EXPO_PUBLIC_BACKEND_LINK}/entry`, {
+            unitStatus,
+        }).then(response => {
+            console.log(response.data);
+        })
+            .catch(function (error) {
+                console.error("New entry error", error);
+            });
+    }
+    const GotoNext = async () => {
+        // The job status will always be "New" we don't need state for that, nor an input field
+        const unitStatus = "New"
+        const response = await axios.post(`${process.env.EXPO_PUBLIC_BACKEND_LINK}/entry`, {
+            unitStatus,
+        }).then(response => {
+            console.log(response.data);
+        })
+            .catch(function (error) {
+                console.error("New entry error", error);
+            });
+        navigation.navigate("Prompts");
     }
 
     const windowHeight = Dimensions.get('window').width;

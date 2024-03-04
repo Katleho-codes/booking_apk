@@ -6,17 +6,14 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from '../../screens/Home';
 import PromptsScreen from '../../screens/PromptsScreen';
 import BookingForm from '../../screens/BookingForm';
+import ImeiScanner from '../../screens/Scanners/ImeiScanner';
+import BackupTerms from '../../screens/BackupTerms';
+import Terms from '../../screens/Terms';
+
 
 const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
+const TopTabs = createMaterialTopTabNavigator();
 
-// const HomeScreen = () => {
-//     return (
-//         <Tab.Navigator>
-//             <Tab.Screen name="Home" component={Home} />
-//         </Tab.Navigator>
-//     )
-// }
 
 export default function Stacks() {
     return (
@@ -36,6 +33,8 @@ export default function Stacks() {
                 component={BookingForm}
                 options={{ headerShown: false }}
             />
+
+
         </Stack.Navigator>
     )
 }

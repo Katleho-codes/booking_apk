@@ -3,6 +3,7 @@ import React from 'react'
 import Container from '../../components/Container'
 import { Dropdown } from 'react-native-element-dropdown';
 import SectionHeaderTitle from '../../components/SectionHeaderTitle';
+import { Colors } from '../../utils/colors';
 
 
 
@@ -13,15 +14,25 @@ type TDeviceInspection = {
     setFaultOccurence: (e: string) => void;
     faultOccurenceFocus: boolean;
     setFaultOccurenceFocus: (e: boolean) => void;
-
+    assetType: string;
+    setAssetType: (e: string) => void;
+    isAssetDropdownFocus: boolean;
+    setIsAssetDropdownFocus: (e: boolean) => void;
 }
 
-export default function DeviceInspection({ fault, setFault, faultOccurence, setFaultOccurence, faultOccurenceFocus, setFaultOccurenceFocus }: TDeviceInspection) {
+export default function DeviceInspection({ fault, setFault, faultOccurence, setFaultOccurence, faultOccurenceFocus, setFaultOccurenceFocus, isAssetDropdownFocus, setIsAssetDropdownFocus, assetType, setAssetType }: TDeviceInspection) {
     const faultOccurences = [
         { label: "Often", value: "Often" },
         { label: "Sometimes", value: "Sometimes" },
         { label: "Always", value: "Always" },
     ]
+
+    const assetTypes = [
+        { label: "TV/Monitor/Soundbar/Projector/Bluray", value: "TV/Audio" },
+        { label: "Washing machine/Fridge/Microwave/Ovens", value: "Home Appliances" },
+        { label: "Phone, tablet, buds, smart watch", value: "HHP" },
+    ]
+
     return (
         <>
             <StatusBar />
@@ -33,7 +44,7 @@ export default function DeviceInspection({ fault, setFault, faultOccurence, setF
                         marginVertical: 4,
                     }}
                 >
-                    <Text
+                    {/* <Text
                         style={{
                             fontFamily: "Inter_500Medium",
                             color: "#0d0d0d",
@@ -41,9 +52,10 @@ export default function DeviceInspection({ fault, setFault, faultOccurence, setF
                         }}
                     >
                         Fault
-                    </Text>
+                    </Text> */}
                     <TextInput
                         placeholder='Fault description'
+                        placeholderTextColor={`${Colors.grey}`}
                         style={{
                             borderWidth: 1,
                             paddingHorizontal: 10,
@@ -75,7 +87,7 @@ export default function DeviceInspection({ fault, setFault, faultOccurence, setF
 
                                 // color: "#0d0d0d",
                             },
-                            faultOccurenceFocus && { borderColor: "blue" },
+                            faultOccurenceFocus && { borderColor: `${Colors.blue}` },
                         ]}
 
                         // iconStyle={mainStyles.iconStyle}
@@ -93,6 +105,54 @@ export default function DeviceInspection({ fault, setFault, faultOccurence, setF
                         onChange={(item: any) => {
                             setFaultOccurence(item.value);
                             setFaultOccurenceFocus(false);
+                        }}
+                        itemTextStyle={{
+                            fontFamily: "Inter_500Medium",
+                            color: "#0d0d0d",
+                            fontSize: 14
+                        }}
+                        placeholderStyle={{
+                            fontFamily: "Inter_500Medium",
+                            color: `${Colors.grey}`,
+                            fontSize: 14
+                        }}
+                    />
+                </View>
+                <View
+                    style={{
+                        marginVertical: 4,
+                    }}
+                >
+                    {/* Dropdown menu */}
+                    <Dropdown
+                        style={[
+                            {
+                                borderColor: "#eee",
+                                borderWidth: 1,
+                                borderRadius: 2,
+                                paddingHorizontal: 10,
+                                paddingVertical: 12,
+
+                                // color: "#0d0d0d",
+                            },
+                            isAssetDropdownFocus && { borderColor: `${Colors.blue}` },
+                        ]}
+
+                        // iconStyle={mainStyles.iconStyle}
+                        fontFamily='Inter_400Regular'
+                        data={assetTypes}
+                        search
+                        maxHeight={300}
+                        labelField="label"
+                        valueField="value"
+                        placeholder={!isAssetDropdownFocus ? "What are you booking?" : "..."}
+                        searchPlaceholder="Search..."
+                        value={assetType}
+                        onFocus={() => setIsAssetDropdownFocus(true)}
+                        onBlur={() => setIsAssetDropdownFocus(false)}
+                        onChange={(item: any) => {
+                            setAssetType(item.value);
+                            setIsAssetDropdownFocus(false);
                         }}
                     />
                 </View>

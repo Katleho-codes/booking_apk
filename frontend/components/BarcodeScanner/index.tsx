@@ -2,6 +2,8 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import Container from '../Container'
 import { CameraView, useCameraPermissions, BarcodeScanningResult } from 'expo-camera/next';
+
+
 export default function BarcodeScanner() {
     const [facing, setFacing] = useState('back');
     const [permission, requestPermission] = useCameraPermissions();
@@ -13,6 +15,7 @@ export default function BarcodeScanner() {
     function toggleCameraFacing() {
         setFacing(current => (current === 'back' ? 'front' : 'back'));
     }
+
 
     return (
         <Container>
