@@ -1,48 +1,39 @@
 
 import React, { useState } from 'react'
 import Container from '../../components/Container'
-import { getCustomerRepairshpr } from '../../hooks/useRepairApi'
 import useDebounce from '../../hooks/useDebounce'
-import CustomModal from '../../components/CustomModal'
-import axios from 'axios';
 
-import { Alert, Modal, StyleSheet, Text, Pressable, View, StatusBar, Image, Dimensions } from 'react-native';
+import { useNavigation } from "@react-navigation/native"
+import { NativeStackNavigationProp } from "@react-navigation/native-stack"
+import { Dimensions, Image, StatusBar, Text, View } from 'react-native'
 import CustomButton from '../../components/Button'
-import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Colors } from '../../utils/colors'
+
+
 
 export default function Home() {
     const [searchCustomer, setSearchCustomer] = useState("")
     const debouncedCustomerSearch = useDebounce(searchCustomer, 400);
     // const [isModalVisible, setIsModalVisible] = useState(false)
-    const { searchedCustomerFirstname, searchedCustomerLastname, searchedCustomerEmail, searchedCustomerMobile, searchedCustomerAddress, searchedCustomerAddressTwo, searchedCustomerCity, searchedCustomerProvince, searchedCustomerZip } = getCustomerRepairshpr({ debouncedCustomerSearch })
+
     // Navigation hook
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
-    const sendNewEntry = async () => {
-        // The job status will always be "New" we don't need state for that, nor an input field
-        const unitStatus = "New"
-        const response = await axios.post(`${process.env.EXPO_PUBLIC_BACKEND_LINK}/entry`, {
-            unitStatus,
-        }).then(response => {
-            console.log(response.data);
-        })
-            .catch(function (error) {
-                console.error("New entry error", error);
-            });
-    }
     const GotoNext = async () => {
+        // TODO: Uncomment then following code
         // The job status will always be "New" we don't need state for that, nor an input field
-        const unitStatus = "New"
-        const response = await axios.post(`${process.env.EXPO_PUBLIC_BACKEND_LINK}/entry`, {
-            unitStatus,
-        }).then(response => {
-            console.log(response.data);
-        })
-            .catch(function (error) {
-                console.error("New entry error", error);
-            });
+        // const unitStatus = "New"
+        // const response = await axios.post(`${process.env.EXPO_PUBLIC_BACKEND_LINK}/entry`, {
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     unitStatus,
+        // }).then(response => {
+        //     console.log(response.data);
+        // })
+        //     .catch(function (error) {
+        //         console.error("New entry error", error);
+        //     });
         navigation.navigate("Prompts");
     }
 

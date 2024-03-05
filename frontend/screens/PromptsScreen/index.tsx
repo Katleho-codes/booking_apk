@@ -9,9 +9,11 @@ export default function PromptsScreen() {
     // Navigation hook
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
-    const GotoNext = () => { }
+    const GotoNext = () => {
+        navigation.navigate("SearchCustomer")
+    }
     const GotoBookingForm = () => {
-        navigation.navigate("BookingForm")
+        navigation.navigate("CustomerDetails")
     }
     return (
         <View style={{

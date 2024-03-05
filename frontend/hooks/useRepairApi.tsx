@@ -5,15 +5,15 @@ type TuseGetCustomerRepairshpr = {
     debouncedCustomerSearch: string;
 }
 export const getCustomerRepairshpr = ({ debouncedCustomerSearch }: TuseGetCustomerRepairshpr) => {
-    const [searchedCustomerFirstname, setSearchedCustomerFirstname] = useState<string>("")
-    const [searchedCustomerLastname, setSearchedCustomerLastname] = useState("")
-    const [searchedCustomerEmail, setSearchedCustomerEmail] = useState("")
-    const [searchedCustomerMobile, setSearchedCustomerMobile] = useState("")
-    const [searchedCustomerAddress, setSearchedCustomerAddress] = useState("")
-    const [searchedCustomerAddressTwo, setSearchedCustomerAddressTwo] = useState("")
-    const [searchedCustomerCity, setSearchedCustomerCity] = useState("")
-    const [searchedCustomerProvince, setSearchedCustomerProvince] = useState("")
-    const [searchedCustomerZip, setSearchedCustomerZip] = useState("")
+    const [firstname, setFirstname] = useState("");
+    const [lastname, setLastname] = useState("");
+    const [email, setEmail] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [address1, setAddress1] = useState("");
+    const [address2, setAddress2] = useState("");
+    const [city, setCity] = useState("");
+    const [province, setProvince] = useState("");
+    const [zip, setZip] = useState("");
 
     useEffect(() => {
         const fetchData = async () => {
@@ -32,20 +32,20 @@ export const getCustomerRepairshpr = ({ debouncedCustomerSearch }: TuseGetCustom
             )
                 .then((res) => res.json())
                 .then((data) => {
-                    setSearchedCustomerFirstname(data?.customers[0]?.firstname)
-                    setSearchedCustomerLastname(data?.customers[0]?.lastname)
-                    setSearchedCustomerEmail(data?.customers[0]?.email)
-                    setSearchedCustomerMobile(data?.customers[0]?.mobile)
-                    setSearchedCustomerAddress(data?.customers[0]?.address)
-                    setSearchedCustomerAddressTwo(data?.customers[0]?.address_2)
-                    setSearchedCustomerCity(data?.customers[0]?.city)
-                    setSearchedCustomerProvince(data?.customers[0]?.state)
-                    setSearchedCustomerZip(data?.customers[0]?.zip)
+                    setFirstname(data?.customers[0]?.firstname)
+                    setLastname(data?.customers[0]?.lastname)
+                    setEmail(data?.customers[0]?.email)
+                    setPhoneNumber(data?.customers[0]?.mobile)
+                    setAddress1(data?.customers[0]?.address)
+                    setAddress2(data?.customers[0]?.address_2)
+                    setCity(data?.customers[0]?.city)
+                    setProvince(data?.customers[0]?.state)
+                    setZip(data?.customers[0]?.zip)
                 })
                 .catch((e) => console.log("ticket info error", e));
         };
         fetchData();
     }, [debouncedCustomerSearch]);
 
-    return { searchedCustomerFirstname, searchedCustomerLastname, searchedCustomerEmail, searchedCustomerMobile, searchedCustomerAddress, searchedCustomerAddressTwo, searchedCustomerCity, searchedCustomerProvince, searchedCustomerZip }
+    return { firstname, lastname, email, phoneNumber, address1, address2, city, province, zip }
 }

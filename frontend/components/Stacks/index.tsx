@@ -1,14 +1,12 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import React from 'react';
+import BookingForm from '../../screens/BookingForm';
+import CustomerDetails from "../../screens/BookingForm/CustomerDetails";
+import DeviceInspection from "../../screens/BookingForm/DeviceInspection";
 import Home from '../../screens/Home';
 import PromptsScreen from '../../screens/PromptsScreen';
-import BookingForm from '../../screens/BookingForm';
-import ImeiScanner from '../../screens/Scanners/ImeiScanner';
-import BackupTerms from '../../screens/BackupTerms';
-import Terms from '../../screens/Terms';
+import SearchCustomer from "../../screens/SearchCustomer";
 
 
 const Stack = createNativeStackNavigator();
@@ -31,6 +29,21 @@ export default function Stacks() {
             <Stack.Screen
                 name="BookingForm"
                 component={BookingForm}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="CustomerDetails"
+                component={CustomerDetails}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="DeviceInspection"
+                component={DeviceInspection}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="SearchCustomer"
+                component={SearchCustomer}
                 options={{ headerShown: false }}
             />
 
