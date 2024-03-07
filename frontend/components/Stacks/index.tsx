@@ -1,7 +1,6 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from 'react';
-import BookingForm from '../../screens/BookingForm';
 import CustomerDetails from "../../screens/BookingForm/CustomerDetails";
 import DeviceInspection from "../../screens/BookingForm/DeviceInspection";
 import Home from '../../screens/Home';
@@ -24,11 +23,6 @@ export default function Stacks() {
             <Stack.Screen
                 name="Prompts"
                 component={PromptsScreen}
-                options={{ headerShown: false }}
-            />
-            <Stack.Screen
-                name="BookingForm"
-                component={BookingForm}
                 options={{ headerShown: false }}
             />
             <Stack.Screen

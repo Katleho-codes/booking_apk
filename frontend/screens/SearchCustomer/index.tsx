@@ -1,14 +1,14 @@
-import { View, Text, Pressable, TextInput } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import Container from '../../components/Container';
-import useDebounce from '../../hooks/useDebounce';
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import axios from 'axios';
-import CustomButton from '../../components/Button';
-import { Colors } from '../../utils/colors';
+import * as Crypto from 'expo-crypto';
 import * as SecureStore from 'expo-secure-store';
-import { useNavigation } from "@react-navigation/native"
-import { NativeStackNavigationProp } from "@react-navigation/native-stack"
-
+import React, { useEffect, useState } from 'react';
+import { Text, TextInput, View } from 'react-native';
+import CustomButton from '../../components/Button';
+import useDebounce from '../../hooks/useDebounce';
+import { Colors } from '../../utils/colors';
+import { datetimestamp } from '../../utils/timezone';
 
 
 type TSearchCustomer = {
@@ -23,16 +23,23 @@ type TSearchCustomer = {
 export default function SearchCustomer() {
     const [searchCustomer, setSearchCustomer] = useState("");
     const [result, setResult] = useState<TSearchCustomer[]>([]);
+    const [firstname, setFirstname] = useState("");
+    const [lastname, setLastname] = useState("");
+    const [email, setEmail] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [address1, setAddress1] = useState("");
+    const [address2, setAddress2] = useState("");
+    const [city, setCity] = useState("");
+    const [province, setProvince] = useState("");
+    const [zip, setZip] = useState("");
     const debouncedCustomerSearch = useDebounce(searchCustomer, 400);
     // Navigation hook
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
+    const customUUID = Crypto.randomUUID();
 
-    const addExistingCustomer = async () => {
-        await SecureStore.setItemAsync("email", searchCustomer);
-        navigation.navigate("DeviceInspection", {
-            email: searchCustomer
-        });
-    }
+    useEffect(() => {
+        checkIfCustomerWasHere()
+    }, [searchCustomer])
     const checkIfCustomerWasHere = async () => {
 
         try {
@@ -44,44 +51,74 @@ export default function SearchCustomer() {
             })
             if (data?.customers[0]?.email === searchCustomer) {
                 setResult(data?.customers)
-                // setFirstname(data?.customers[0]?.firstname)
-                // setLastname(data?.customers[0]?.lastname)
-                // setEmail(data?.customers[0]?.email)
-                // setPhoneNumber(data?.customers[0]?.mobile)
-                // setAddress1(data?.customers[0]?.address)
-                // setAddress2(data?.customers[0]?.address_2)
-                // setCity(data?.customers[0]?.city)
-                // setProvince(data?.customers[0]?.state)
-                // setZip(data?.customers[0]?.zip)
+                setFirstname(data?.customers[0]?.firstname)
+                setLastname(data?.customers[0]?.lastname)
+                setEmail(data?.customers[0]?.email)
+                setPhoneNumber(data?.customers[0]?.mobile)
+                setAddress1(data?.customers[0]?.address)
+                setAddress2(data?.customers[0]?.address_2)
+                setCity(data?.customers[0]?.city)
+                setProvince(data?.customers[0]?.state)
+                setZip(data?.customers[0]?.zip)
 
             }
         } catch (error) {
-            console.log(error)
+            //    
         }
 
     }
+    const createEntry = async () => {
+        const createdAt = datetimestamp;
 
-    useEffect(() => {
-        checkIfCustomerWasHere()
-    }, [searchCustomer])
+        try {
+            const response = await fetch(`${process.env.EXPO_PUBLIC_BACKEND_LINK}/entry`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    firstname, lastname, email, phoneNumber, createdAt, customUUID
+                })
+            })
+            const data = await response.json;
+        } catch (error) {
+            //    
+        }
+    }
+
+    const addExistingCustomer = async () => {
+        await SecureStore.setItemAsync("email", searchCustomer);
+        createEntry();
+        navigation.navigate("DeviceInspection", {
+            email: searchCustomer,
+            customUUID: customUUID
+        });
+    }
+
     return (
-        <Container>
+        <View style={{
+            flex: 1,
+            padding: 10,
+            backgroundColor: "#fff",
+            justifyContent: 'center',
+            gap: 10
+        }}>
             <View
-                style={{
-                    marginVertical: 4,
-                }}
+
             >
                 <Text
                     style={{
-                        fontFamily: "Inter_500Medium",
-                        color: "#0d0d0d",
+                        fontFamily: "Inter_600SemiBold",
+                        color: `${Colors.black}`,
                         paddingVertical: 4,
+                        fontSize: 22,
+                        textAlign: "center",
+                        marginVertical: 10
                     }}
                 >
-                    Search customer
+                    Search using email
                 </Text>
                 <TextInput
-
                     style={{
                         borderWidth: 1,
                         paddingHorizontal: 10,
@@ -94,6 +131,9 @@ export default function SearchCustomer() {
                     value={searchCustomer}
                     onChangeText={text => setSearchCustomer(text)}
                     editable={true}
+                    placeholder='example@example.com'
+                    keyboardType='email-address'
+                    maxLength={100}
 
                 />
             </View>
@@ -110,8 +150,9 @@ export default function SearchCustomer() {
                                 <Text
                                     style={{
                                         fontFamily: "Inter_500Medium",
-                                        color: "#0d0d0d",
+                                        color: `${Colors.blue}`,
                                         paddingVertical: 4,
+                                        textAlign: "center"
                                     }}
                                 >
                                     {x.email}
@@ -125,23 +166,6 @@ export default function SearchCustomer() {
                     buttonBgColor={`${Colors.lightBlue}`}
                     pressedButtonBgColor={`${Colors.blue}`} onPress={addExistingCustomer} />}
             </View>
-            {/* {result  ? (
-                <>
-                    <View>
-                        <Text>{searchedCustomerFirstname} {searchedCustomerLastname}</Text>
-                        <Text>{searchedCustomerMobile}</Text>
-                        <Text>{searchedCustomerAddress} {searchedCustomerAddressTwo}</Text>
-                        <Text>{searchedCustomerCity} {searchedCustomerProvince}</Text>
-                        <Text>{searchedCustomerZip}</Text>
-                    </View>
-
-                    <Pressable>
-                        <Text>Add</Text>
-                    </Pressable>
-                </>
-            ) : ""} */}
-
-
-        </Container>
+        </View>
     )
 }

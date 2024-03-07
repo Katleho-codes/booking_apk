@@ -1,9 +1,8 @@
-import { View, Text, ScrollView } from 'react-native'
-import React from 'react'
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import React from 'react';
+import { Colors } from '../../utils/colors';
 import BackupTerms from '../BackupTerms';
 import Policy from '../Policy';
-import { Colors } from '../../utils/colors';
 
 
 

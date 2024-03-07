@@ -1,21 +1,12 @@
-import { View, Text, TextInput, Switch, Button, ScrollView, Pressable, TouchableOpacity } from 'react-native'
-import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { Dropdown } from "react-native-element-dropdown";
-import CustomModal from '../../components/CustomModal';
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import {
-    BottomSheetModal,
-    BottomSheetView,
-    BottomSheetModalProvider,
-} from '@gorhom/bottom-sheet';
-import CustomButton from '../../components/Button';
-import { Colors } from '../../utils/colors';
-import SectionHeaderTitle from '../../components/SectionHeaderTitle';
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { CameraView, useCameraPermissions, BarcodeScanningResult } from 'expo-camera/next';
-import BackupTerms from '../BackupTerms';
 import Checkbox from 'expo-checkbox';
+import React, { useState } from 'react';
+import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { Dropdown } from "react-native-element-dropdown";
+import CustomButton from '../../components/Button';
+import SectionHeaderTitle from '../../components/SectionHeaderTitle';
+import { Colors } from '../../utils/colors';
 
 type TDeviceInformation = {
     model: string;

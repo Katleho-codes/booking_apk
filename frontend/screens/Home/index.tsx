@@ -6,6 +6,7 @@ import useDebounce from '../../hooks/useDebounce'
 import { useNavigation } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { Dimensions, Image, StatusBar, Text, View } from 'react-native'
+import Animated, { FadeInDown, FadeInLeft, FadeOut } from 'react-native-reanimated'
 import CustomButton from '../../components/Button'
 import { Colors } from '../../utils/colors'
 
@@ -20,20 +21,6 @@ export default function Home() {
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
     const GotoNext = async () => {
-        // TODO: Uncomment then following code
-        // The job status will always be "New" we don't need state for that, nor an input field
-        // const unitStatus = "New"
-        // const response = await axios.post(`${process.env.EXPO_PUBLIC_BACKEND_LINK}/entry`, {
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     unitStatus,
-        // }).then(response => {
-        //     console.log(response.data);
-        // })
-        //     .catch(function (error) {
-        //         console.error("New entry error", error);
-        //     });
         navigation.navigate("Prompts");
     }
 
@@ -52,14 +39,12 @@ export default function Home() {
 
             <StatusBar />
             <Container>
-
-
                 <View style={{
                     flex: 1,
                     display: "flex",
                     justifyContent: "center"
                 }}>
-                    <View>
+                    <Animated.View entering={FadeInLeft} exiting={FadeOut}>
                         <Text style={{
                             textAlign: "center",
                             fontSize: 18,
@@ -102,8 +87,8 @@ export default function Home() {
                             color: Colors.black,
                             margin: 0
                         }}>MM ALL Electronics</Text>
-                    </View>
-                    <View style={{
+                    </Animated.View>
+                    <Animated.View entering={FadeInDown} style={{
                         marginVertical: 8
                     }}>
                         <CustomButton
@@ -113,7 +98,7 @@ export default function Home() {
                             buttonBgColor={`${Colors.lightBlue}`}
                             pressedButtonBgColor={`${Colors.blue}`}
                         />
-                    </View>
+                    </Animated.View>
                 </View>
             </Container>
         </>

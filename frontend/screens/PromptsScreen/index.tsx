@@ -1,9 +1,11 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import CustomButton from '../../components/Button'
-import { Colors } from '../../utils/colors'
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import React from 'react';
+import { Text, View } from 'react-native';
+import Animated, { FadeInLeft, FadeInRight, FadeOut } from 'react-native-reanimated';
+import CustomButton from '../../components/Button';
+import { Colors } from '../../utils/colors';
+
 
 export default function PromptsScreen() {
     // Navigation hook
@@ -12,7 +14,7 @@ export default function PromptsScreen() {
     const GotoNext = () => {
         navigation.navigate("SearchCustomer")
     }
-    const GotoBookingForm = () => {
+    const GotoCustomerDetails = () => {
         navigation.navigate("CustomerDetails")
     }
     return (
@@ -22,7 +24,9 @@ export default function PromptsScreen() {
             backgroundColor: "#fff",
             alignItems: 'center',
             justifyContent: 'center',
+
         }}>
+
             <Text style={{
                 color: Colors.black,
                 fontSize: 18,
@@ -36,21 +40,25 @@ export default function PromptsScreen() {
                 <View style={{
                     marginVertical: 8
                 }}>
+                    <Animated.View entering={FadeInLeft} exiting={FadeOut}>
+                        <CustomButton
+                            onPress={GotoNext}
+                            text="Yes, I have"
+                            fontSize={14}
+                            buttonBgColor={`${Colors.lightBlue}`}
+                            pressedButtonBgColor={`${Colors.blue}`}
+                        />
+                    </Animated.View>
+                </View>
+                <Animated.View entering={FadeInRight} exiting={FadeOut}>
                     <CustomButton
-                        onPress={GotoNext}
-                        text="Yes, I have"
+                        onPress={GotoCustomerDetails}
+                        text="No, first time"
                         fontSize={14}
                         buttonBgColor={`${Colors.lightBlue}`}
                         pressedButtonBgColor={`${Colors.blue}`}
                     />
-                </View>
-                <CustomButton
-                    onPress={GotoBookingForm}
-                    text="No, first time"
-                    fontSize={14}
-                    buttonBgColor={`${Colors.lightBlue}`}
-                    pressedButtonBgColor={`${Colors.blue}`}
-                />
+                </Animated.View>
             </View>
         </View>
     )

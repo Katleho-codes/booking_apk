@@ -1,15 +1,16 @@
-import { View, Text, TextInput, ScrollView, Alert } from 'react-native'
-import React, { useState } from 'react'
-import SectionHeaderTitle from '../../components/SectionHeaderTitle';
-import { Colors } from '../../utils/colors';
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import * as Crypto from 'expo-crypto';
+import * as SecureStore from 'expo-secure-store';
+import React, { useState } from 'react';
+import { ScrollView, TextInput, View } from 'react-native';
+import CustomButton from '../../components/Button';
 import Container from '../../components/Container';
 import Header from '../../components/Header';
-import CustomButton from '../../components/Button';
-import * as SecureStore from 'expo-secure-store';
-import { useNavigation } from "@react-navigation/native"
-import { NativeStackNavigationProp } from "@react-navigation/native-stack"
-
-
+import { Colors } from '../../utils/colors';
+import { datetimestamp } from '../../utils/timezone';
+import { provinces } from "../../utils/provinces";
+import { Dropdown } from 'react-native-element-dropdown';
 
 
 export default function CustomerDetails() {
@@ -21,13 +22,41 @@ export default function CustomerDetails() {
     const [address2, setAddress2] = useState("");
     const [city, setCity] = useState("");
     const [province, setProvince] = useState("");
+    const [provinceFocus, setProvinceFocus] = useState(false)
     const [zip, setZip] = useState("");
 
     // Navigation hook
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
+    const customUUID = Crypto.randomUUID();
     const createEntry = async () => {
+        const createdAt = datetimestamp;
+        const values = {
+            firstname,
+            lastname,
+            email,
+            phoneNumber,
+            address1,
+            address2,
+            city,
+            province,
+            zip,
+            createdAt,
+            customUUID
+        }
+        try {
+            const response = await fetch(`${process.env.EXPO_PUBLIC_BACKEND_LINK}/entry`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
 
+                },
+                body: JSON.stringify(values)
+            })
+            const data = await response.json;
+        } catch (error) {
+            // 
+        }
     }
 
     const createCustomer = async () => {
@@ -52,15 +81,13 @@ export default function CustomerDetails() {
             })
             const data = await response.json;
             await SecureStore.setItemAsync("email", email);
-            // console.log("data", data);
+            createEntry();
             navigation.navigate("DeviceInspection", {
-                email: email
+                email: email, firstname: firstname, lastname: lastname, createdAt: datetimestamp, phoneNumber: phoneNumber,
+                customUUID: customUUID
             });
-            // console.log("Customer created")
         } catch (error) {
-            console.log('====================================');
-            console.log("create customer error", error);
-            console.log('====================================');
+            //   
         }
 
     }
@@ -100,6 +127,8 @@ export default function CustomerDetails() {
                             onChangeText={e => setFirstname(e)}
                             placeholder='First name'
                             placeholderTextColor={`${Colors.grey}`}
+                            maxLength={100}
+                            keyboardType="default"
                         />
                     </View>
                     <View
@@ -124,6 +153,8 @@ export default function CustomerDetails() {
                             onChangeText={e => setLastname(e)}
                             placeholder='Last name'
                             placeholderTextColor={`${Colors.grey}`}
+                            maxLength={100}
+                            keyboardType="default"
                         />
                     </View>
                     <View
@@ -147,6 +178,8 @@ export default function CustomerDetails() {
                             onChangeText={e => setEmail(e)}
                             placeholder='Email address'
                             placeholderTextColor={`${Colors.grey}`}
+                            maxLength={100}
+                            keyboardType="email-address"
                         />
                     </View>
                     <View
@@ -170,6 +203,8 @@ export default function CustomerDetails() {
                             onChangeText={e => setPhoneNumber(e)}
                             placeholder='Phone number'
                             placeholderTextColor={`${Colors.grey}`}
+                            maxLength={100}
+                            keyboardType="phone-pad"
                         />
                     </View>
                     <View
@@ -193,6 +228,8 @@ export default function CustomerDetails() {
                             onChangeText={e => setAddress1(e)}
                             placeholder='Address Line 1'
                             placeholderTextColor={`${Colors.grey}`}
+                            maxLength={100}
+                            keyboardType="default"
                         />
                     </View>
                     <View
@@ -217,6 +254,8 @@ export default function CustomerDetails() {
                             onChangeText={e => setAddress2(e)}
                             placeholder='Address Line 2'
                             placeholderTextColor={`${Colors.grey}`}
+                            maxLength={100}
+                            keyboardType="default"
                         />
                     </View>
                     <View
@@ -241,6 +280,55 @@ export default function CustomerDetails() {
                             onChangeText={e => setCity(e)}
                             placeholder='City'
                             placeholderTextColor={`${Colors.grey}`}
+                            maxLength={100}
+                            keyboardType="default"
+                        />
+                    </View>
+                    <View
+                        style={{
+                            marginVertical: 4,
+                        }}
+                    >
+                        {/* Dropdown menu */}
+                        <Dropdown
+                            style={[
+                                {
+                                    borderColor: "#eee",
+                                    borderWidth: 1,
+                                    borderRadius: 2,
+                                    paddingHorizontal: 10,
+                                    paddingVertical: 12,
+
+                                    // color: "#0d0d0d",
+                                },
+                                provinceFocus && { borderColor: `${Colors.blue}` },
+                            ]}
+
+                            // iconStyle={mainStyles.iconStyle}
+                            fontFamily='Inter_400Regular'
+                            data={provinces}
+                            maxHeight={300}
+                            labelField="label"
+                            valueField="value"
+                            placeholder={!provinceFocus ? "Select province" : "..."}
+                            searchPlaceholder="Search..."
+                            value={province}
+                            onFocus={() => setProvinceFocus(true)}
+                            onBlur={() => setProvinceFocus(false)}
+                            onChange={(item: any) => {
+                                setProvince(item.value);
+                                setProvinceFocus(false);
+                            }}
+                            itemTextStyle={{
+                                fontFamily: "Inter_500Medium",
+                                color: `${Colors.grey}`,
+                                fontSize: 14
+                            }}
+                            placeholderStyle={{
+                                fontFamily: "Inter_500Medium",
+                                color: `${Colors.grey}`,
+                                fontSize: 14
+                            }}
                         />
                     </View>
                     <View
@@ -249,7 +337,6 @@ export default function CustomerDetails() {
                         }}
                     >
                         <TextInput
-
                             style={{
                                 borderWidth: 1,
                                 paddingHorizontal: 10,
@@ -264,6 +351,8 @@ export default function CustomerDetails() {
                             onChangeText={e => setProvince(e)}
                             placeholder='Province'
                             placeholderTextColor={`${Colors.grey}`}
+                            maxLength={100}
+                            keyboardType="default"
                         />
                     </View>
                     <View
@@ -288,10 +377,14 @@ export default function CustomerDetails() {
                             inputMode='numeric'
                             placeholder='Zip/Postal code'
                             placeholderTextColor={`${Colors.grey}`}
+                            maxLength={5}
                         />
                     </View>
                 </ScrollView>
-                <CustomButton text='Create customer' buttonBgColor={`${Colors.blue}`} pressedButtonBgColor={`${Colors.lightBlue}`} onPress={createCustomer} />
+
+                <CustomButton text='Create customer' buttonBgColor={`${Colors.blue}`} pressedButtonBgColor={`${Colors.lightBlue}`} onPress={createCustomer} fontSize={14} />
+
+
             </Container>
         </>
     )

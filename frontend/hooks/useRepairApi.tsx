@@ -42,7 +42,9 @@ export const getCustomerRepairshpr = ({ debouncedCustomerSearch }: TuseGetCustom
                     setProvince(data?.customers[0]?.state)
                     setZip(data?.customers[0]?.zip)
                 })
-                .catch((e) => console.log("ticket info error", e));
+                .catch((e) => {
+                    // 
+                });
         };
         fetchData();
     }, [debouncedCustomerSearch]);
