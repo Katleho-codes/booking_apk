@@ -1,11 +1,8 @@
-import { View, Text, ScrollView } from 'react-native'
-import React from 'react'
-import { Colors } from '../../utils/colors'
-import Checkbox from 'expo-checkbox';
-import CustomButton from '../../components/Button';
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import Header from '../../components/Header';
+import React from 'react';
+import { ScrollView, Text, View } from 'react-native';
+import { Colors } from '../../utils/colors';
 
 type TBackupTerms = {
     isBackUpPriceAgreed: boolean;

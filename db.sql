@@ -4,10 +4,18 @@ CREATE DATABASE booking_app;
 CREATE TABLE backup_terms (
     unique_id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
     term_id BIGSERIAL,
-    term_name VARCHAR(50),
     term_description text,
     created_at TIMESTAMP,
-    updated_at TIMESTAMP  
+    updated_at TIMESTAMP,
+    column is_bold boolean;  
+);
+CREATE TABLE terms_and_conditions (
+    unique_id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    term_id BIGSERIAL,
+    term_description text,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP ,
+    column is_bold boolean; 
 );
 
 CREATE TABLE tickets(

@@ -4,13 +4,13 @@ import * as Crypto from 'expo-crypto';
 import * as SecureStore from 'expo-secure-store';
 import React, { useState } from 'react';
 import { ScrollView, TextInput, View } from 'react-native';
+import { Dropdown } from 'react-native-element-dropdown';
 import CustomButton from '../../components/Button';
 import Container from '../../components/Container';
 import Header from '../../components/Header';
 import { Colors } from '../../utils/colors';
-import { datetimestamp } from '../../utils/timezone';
 import { provinces } from "../../utils/provinces";
-import { Dropdown } from 'react-native-element-dropdown';
+import { datetimestamp } from '../../utils/timezone';
 
 
 export default function CustomerDetails() {

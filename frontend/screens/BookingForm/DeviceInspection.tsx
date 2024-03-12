@@ -1,8 +1,9 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import axios from 'axios';
+import Checkbox from 'expo-checkbox';
 import React, { useEffect, useState } from 'react';
-import { Alert, StatusBar, TextInput, View } from 'react-native';
+import { Alert, StatusBar, Text, TextInput, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import CustomButton from '../../components/Button';
 import Container from '../../components/Container';
@@ -12,15 +13,11 @@ import { Colors } from '../../utils/colors';
 import { faultOccurences } from '../../utils/faultOccurences';
 import { datetimestamp } from '../../utils/timezone';
 
+
 export default function DeviceInspection() {
-    const [model, setModel] = useState("")
-    const [imei, setImei] = useState("")
-    const [make, setMake] = useState("Samsung")
-    const [serialNumber, setSerialNumber] = useState("")
     const [isAssetDropdownFocus, setIsAssetDropdownFocus] = useState(false)
     const [assetType, setAssetType] = useState("");
     const [isBackUpNeedCheckboxEnabled, setIsBackUpNeedCheckboxEnabled] = useState(false)
-
     // Navigation hook
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
@@ -31,6 +28,7 @@ export default function DeviceInspection() {
     const [customerId, setCustomerId] = useState<any>("")
     const [ticketNumber, setTicketNumber] = useState<string | number>("")
     const { email, customUUID }: any = route?.params;
+
 
     const updateEntry = async () => {
         const updatedAt = datetimestamp;
@@ -234,12 +232,32 @@ export default function DeviceInspection() {
                         }}
                     />
                 </View>
-                <CustomButton text="Create ticket"
-                    fontSize={14}
-                    buttonBgColor={`${Colors.lightBlue}`}
-                    pressedButtonBgColor={`${Colors.blue}`} onPress={createTicket} />
-            </Container>
 
+                <View style={{
+                    gap: 10,
+                    marginVertical: 8
+                }}>
+                    <CustomButton text="Read our terms and conditions"
+                        fontSize={14}
+                        buttonBgColor={`${Colors.lightBlue}`}
+                        pressedButtonBgColor={`${Colors.blue}`} onPress={() => {
+                            navigation.navigate("Terms")
+                        }} />
+                    <CustomButton text="Create ticket"
+                        fontSize={14}
+                        buttonBgColor={`${Colors.lightBlue}`}
+                        pressedButtonBgColor={`${Colors.blue}`} onPress={createTicket} />
+                </View>
+
+
+
+                <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginVertical: 8 }}>
+                    <Text>Does your phone require backup?(If no, leave unchecked)</Text>
+                    <Checkbox value={isBackUpNeedCheckboxEnabled} onValueChange={setIsBackUpNeedCheckboxEnabled} />
+                </View>
+
+
+            </Container>
         </>
     )
 }

@@ -29,11 +29,11 @@ export default function CustomModal({ visible, onRequestClose, onShowModal, onHi
                     </View>
                 </View>
             </Modal>
-            <Pressable
+            {/* <Pressable
                 style={[styles.button, styles.buttonOpen]}
                 onPress={onShowModal}>
                 <Text style={styles.textStyle}>Show Modal</Text>
-            </Pressable>
+            </Pressable> */}
         </View>
     )
 }
