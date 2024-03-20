@@ -4,7 +4,6 @@ import Checkbox from 'expo-checkbox'
 import SignatureScreen, {
     SignatureViewRef,
 } from "react-native-signature-canvas";
-
 import * as FileSystem from "expo-file-system";
 
 type TSignTerms = {

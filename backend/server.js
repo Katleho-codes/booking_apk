@@ -6,9 +6,9 @@ import bodyParser from "body-parser";
 import "dotenv/config";
 
 // Routes
-import { router as entriesRoutes } from "./routes/entries.js";
-import { router as termsAndCondtions } from "./routes/terms.js";
-import { router as fileRoute } from "./routes/create_file_route.js";
+import { router as entriesRoutes } from "./routes/ticket_entries/entries.js";
+import { router as termsAndCondtions } from "./routes/terms_and_conditions/terms.js";
+import { router as backupTerms } from "./routes/backup_terms_and_conditions/index.js";
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(helmet());
@@ -17,7 +17,7 @@ app.use(express.json());
 
 app.use("/", entriesRoutes);
 app.use("/", termsAndCondtions);
-app.use("/", fileRoute);
+app.use("/", backupTerms);
 
 const PORT = process.env.BACKEND_PORT;
 app.listen(PORT, () => {

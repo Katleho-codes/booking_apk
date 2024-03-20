@@ -23,3 +23,25 @@ export const useTermsAndConditions = () => {
     }, [termsAndConditions])
     return { termsAndConditions }
 }
+export const useBackupRestoreTermsAndConditions = () => {
+    const [backupTermsAndConditions, setBackupTermsAndConditions] = useState<string[] | any[]>([])
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await fetch(
+                `${process.env.EXPO_PUBLIC_BACKEND_LINK}/backup_terms_and_conditions`,
+                {
+                    method: "GET",
+                    mode: "no-cors",
+                    cache: "default"
+                }
+            )
+            const data = await response.json()
+
+            setBackupTermsAndConditions(data)
+        }
+        fetchData();
+    }, [backupTermsAndConditions])
+    return { backupTermsAndConditions }
+}

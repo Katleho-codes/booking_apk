@@ -29,14 +29,16 @@ export default function PointTwo({ pointTwoChecked, togglePointTwoSwitch, reason
                     </View>
                 ))
             }
-            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginVertical: 8 }}>
-                <Text style={{
-                    paddingVertical: 10,
-                    fontFamily: "Inter_400Regular",
-                    color: `${Colors.black}`
-                }}>Do you agree with the above term?</Text>
-                <Checkbox value={pointTwoChecked} onValueChange={togglePointTwoSwitch} />
-            </View>
+            {filtered && (
+                <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginVertical: 8 }}>
+                    <Text style={{
+                        paddingVertical: 10,
+                        fontFamily: "Inter_400Regular",
+                        color: `${Colors.black}`
+                    }}>Do you agree with the above term?</Text>
+                    <Checkbox value={pointTwoChecked} onValueChange={togglePointTwoSwitch} />
+                </View>
+            )}
             {
                 pointTwoChecked === false ? (
                     <View

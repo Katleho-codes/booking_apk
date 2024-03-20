@@ -1,20 +1,14 @@
-import { View, Text, Switch, ScrollView } from 'react-native'
-import React from 'react'
+import React from 'react';
+import { Text, View } from 'react-native';
 import { useTermsAndConditions } from '../../hooks/useTermsAndConditions';
-import Checkbox from 'expo-checkbox';
 import { Colors } from '../../utils/colors';
 
 
-interface IPointOne {
-    pointOneChecked: boolean;
-    togglePointOneSwitch: (e: boolean) => void;
-}
-
-export default function PointOne({ pointOneChecked, togglePointOneSwitch }: IPointOne) {
+export default function PointOne() {
     const { termsAndConditions } = useTermsAndConditions()
     let filtered = termsAndConditions.filter((item) => item.is_bold !== true)
     return (
-        <ScrollView>
+        <View>
 
             {
                 filtered.map((item, index) => (
@@ -28,6 +22,6 @@ export default function PointOne({ pointOneChecked, togglePointOneSwitch }: IPoi
                 ))
             }
             {/* <Checkbox color={`${Colors.lightBlue}`} value={pointOneChecked} onValueChange={setIsPointOneChecked} /> */}
-        </ScrollView>
+        </View >
     )
 }

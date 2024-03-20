@@ -1,4 +1,4 @@
-import { pool } from "../db.js";
+import { pool } from "../../db.js";
 
 const getTerms = async (req, res) => {
   try {
@@ -6,7 +6,9 @@ const getTerms = async (req, res) => {
       "SELECT term_id, term_description, is_bold from terms_and_conditions"
     );
     res.json(rows);
-  } catch (error) {}
+  } catch (error) {
+    console.log("get terms error", error);
+  }
 };
 
 export default getTerms;
