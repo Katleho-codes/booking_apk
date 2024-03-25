@@ -10,7 +10,7 @@ import { TCustomButton } from './types';
 
 export default function CustomButton({ text, fontSize, onPress, buttonBgColor, pressedButtonBgColor }: TCustomButton) {
     return (
-        <Pressable onPress={onPress} style={({ pressed }) => [styles.buttonStyles]}>
+        <Pressable onPress={onPress} style={({ pressed }) => [{ backgroundColor: pressed ? pressedButtonBgColor : buttonBgColor }, { fontSize: fontSize }, styles.buttonStyles]}>
             <Text style={styles.buttonText}>{text}</Text>
         </Pressable>
     )

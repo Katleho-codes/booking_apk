@@ -286,7 +286,12 @@ export default function DeviceInspection() {
                                         setModalVisible(!modalVisible);
                                     }}>
                                     <View style={styles.modalContent}>
-                                        <View style={styles.modalSignaturePadWrapper}>
+                                        <View style={[styles.modalSignaturePadWrapper, {
+                                            width: width, shadowOffset: {
+                                                width: 0,
+                                                height: 2,
+                                            },
+                                        }]}>
                                             <SignatureScreen
                                                 ref={termsRef}
                                                 onEnd={handleTermsSignatureEnd}

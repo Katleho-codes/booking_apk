@@ -8,11 +8,11 @@ export const styles = StyleSheet.create({
     borderRadius: 4,
     elevation: 2,
     // width: "100%",
-    backgroundColor: pressed ? pressedButtonBgColor : buttonBgColor,
+
   },
   buttonText: {
     color: "white",
-    fontSize: fontSize,
+  
     fontWeight: "600",
     textAlign: "center",
     textTransform: "capitalize",

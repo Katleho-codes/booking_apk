@@ -1,4 +1,5 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, useWindowDimensions } from "react-native";
+import { Colors } from "../../utils/colors";
 
 export const styles = StyleSheet.create({
   textInputParent: { marginVertical: 4 },
@@ -53,7 +54,6 @@ export const styles = StyleSheet.create({
     padding: 10,
   },
   modalSignaturePadWrapper: {
-    width: width,
     height: 400,
     margin: 20,
     backgroundColor: "white",
@@ -61,10 +61,7 @@ export const styles = StyleSheet.create({
     padding: 35,
     alignItems: "center",
     shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,

@@ -16,34 +16,33 @@ const TopTabs = createMaterialTopTabNavigator();
 export default function Stacks() {
     return (
         <Stack.Navigator initialRouteName="Home">
-            <Stack.Group>
-                <Stack.Screen
-                    name="Home"
-                    component={Home}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name="Prompts"
-                    component={PromptsScreen}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name="CustomerDetails"
-                    component={CustomerDetails}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name="DeviceInspection"
-                    component={DeviceInspection}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name="SearchCustomer"
-                    component={SearchCustomer}
-                    options={{ headerShown: false }}
-                />
+            <Stack.Screen
+                name="Home"
+                component={Home}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="Prompts"
+                component={PromptsScreen}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="CustomerDetails"
+                component={CustomerDetails}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="DeviceInspection"
+                component={DeviceInspection}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="SearchCustomer"
+                component={SearchCustomer}
+                options={{ headerShown: false }}
+            />
 
-            </Stack.Group>
+
 
         </Stack.Navigator>
     )
