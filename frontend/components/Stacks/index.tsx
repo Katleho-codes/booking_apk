@@ -6,7 +6,7 @@ import DeviceInspection from "../../screens/BookingForm/DeviceInspection";
 import Home from '../../screens/Home';
 import PromptsScreen from '../../screens/PromptsScreen';
 import SearchCustomer from "../../screens/SearchCustomer";
-import Terms from "../../screens/Terms";
+
 
 
 const Stack = createNativeStackNavigator();
@@ -43,13 +43,6 @@ export default function Stacks() {
                     options={{ headerShown: false }}
                 />
 
-            </Stack.Group>
-            <Stack.Group screenOptions={{ presentation: 'modal' }}>
-                <Stack.Screen
-                    name="Terms"
-                    component={Terms}
-                    options={{ headerShown: false }}
-                />
             </Stack.Group>
 
         </Stack.Navigator>

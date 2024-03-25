@@ -5,6 +5,7 @@ import { Text, View } from 'react-native';
 import Animated, { FadeInLeft, FadeInRight, FadeOut } from 'react-native-reanimated';
 import CustomButton from '../../components/Button';
 import { Colors } from '../../utils/colors';
+import { styles } from "./style";
 
 
 export default function PromptsScreen() {
@@ -18,22 +19,9 @@ export default function PromptsScreen() {
         navigation.navigate("CustomerDetails")
     }
     return (
-        <View style={{
-            flex: 1,
-            padding: 10,
-            backgroundColor: "#fff",
-            alignItems: 'center',
-            justifyContent: 'center',
+        <View style={styles.centeredContainer}>
 
-        }}>
-
-            <Text style={{
-                color: Colors.black,
-                fontSize: 18,
-                fontFamily: "Inter_500Medium",
-                textAlign: "center",
-                justifyContent: "space-around",
-            }}>Have you been here before?</Text>
+            <Text style={styles.queryText}>Have you been here before?</Text>
             <View style={{
                 gap: 10
             }}>

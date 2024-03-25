@@ -9,6 +9,7 @@ import { Dimensions, Image, StatusBar, Text, View } from 'react-native'
 import Animated, { FadeInDown, FadeInLeft, FadeOut } from 'react-native-reanimated'
 import CustomButton from '../../components/Button'
 import { Colors } from '../../utils/colors'
+import { styles } from './styles'
 
 
 
@@ -27,13 +28,7 @@ export default function Home() {
     const windowHeight = Dimensions.get('window').width;
     const windowWidth = Dimensions.get('window').height;
     return (
-        // <CustomModal
-        //     onRequestClose={() => setIsModalVisible(false)}
-        //     visible={isModalVisible}
-        //     onHide={() => setIsModalVisible(false)}
-        //     onShowModal={() => setIsModalVisible(true)}
 
-        // />
 
         <>
 
@@ -45,48 +40,16 @@ export default function Home() {
                     justifyContent: "center"
                 }}>
                     <Animated.View entering={FadeInLeft} exiting={FadeOut}>
-                        <Text style={{
-                            textAlign: "center",
-                            fontSize: 18,
-                            fontFamily: "Inter_200ExtraLight",
-                            color: Colors.black,
-                            marginBottom: 0,
-                            textTransform: "uppercase"
-                        }}>Welcome to</Text>
-                        <View style={{
-                            maxWidth: windowWidth,
-                            overflow: "hidden",
-                            flexDirection: "row",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            marginVertical: 0
-                        }}>
+                        <Text style={styles.homeHeadingOne}>Welcome to</Text>
+                        <View style={[{ maxWidth: windowWidth, }, styles.homeLogoWrapper]}>
                             <Image
-                                style={{
-                                    width: windowWidth / 2.5,
-                                    height: windowHeight * 0.25,
-                                    resizeMode: "contain",
-                                    borderColor: "#ddd",
-
-                                }}
+                                style={styles.homeLogo}
                                 resizeMode="contain"
                                 source={require('../../assets/samsung_logo.png')}
                             />
                         </View>
-                        <Text style={{
-                            textAlign: "center",
-                            fontSize: 18,
-                            fontFamily: "Inter_300Light",
-                            color: Colors.black,
-                            margin: 0
-                        }}>Customer Service</Text>
-                        <Text style={{
-                            textAlign: "center",
-                            fontSize: 18,
-                            fontFamily: "Inter_600SemiBold",
-                            color: Colors.black,
-                            margin: 0
-                        }}>MM ALL Electronics</Text>
+                        <Text style={styles.homeHeadingTwo}>Customer Service</Text>
+                        <Text style={styles.homeHeadingThree}>MM ALL Electronics</Text>
                     </Animated.View>
                     <Animated.View entering={FadeInDown} style={{
                         marginVertical: 8

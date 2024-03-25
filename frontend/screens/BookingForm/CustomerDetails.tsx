@@ -1,7 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import * as Crypto from 'expo-crypto';
-import * as SecureStore from 'expo-secure-store';
 import React, { useState } from 'react';
 import { ScrollView, TextInput, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -11,6 +10,7 @@ import Header from '../../components/Header';
 import { Colors } from '../../utils/colors';
 import { provinces } from "../../utils/provinces";
 import { datetimestamp } from '../../utils/timezone';
+import { styles } from "./style";
 
 
 export default function CustomerDetails() {
@@ -80,7 +80,6 @@ export default function CustomerDetails() {
                 })
             })
             const data = await response.json;
-            await SecureStore.setItemAsync("email", email);
             createEntry();
             navigation.navigate("DeviceInspection", {
                 email: email, firstname: firstname, lastname: lastname, createdAt: datetimestamp, phoneNumber: phoneNumber,
@@ -98,30 +97,11 @@ export default function CustomerDetails() {
                 <ScrollView>
 
                     <View
-                        style={{
-                            marginVertical: 4,
-                        }}
+                        style={styles.textInputParent}
                     >
-                        {/* <Text
-                    style={{
-                        fontFamily: "Inter_500Medium",
-                        color: "#0d0d0d",
-                        paddingVertical: 4,
-                    }}
-                >
-                    First name
-                </Text> */}
-                        <TextInput
 
-                            style={{
-                                borderWidth: 1,
-                                paddingHorizontal: 10,
-                                paddingVertical: 12,
-                                borderColor: "#eee",
-                                borderRadius: 2,
-                                fontFamily: "Inter_500Medium",
-                                width: "100%",
-                            }}
+                        <TextInput
+                            style={styles.textInput}
                             editable={true}
                             value={firstname}
                             onChangeText={e => setFirstname(e)}
@@ -132,22 +112,11 @@ export default function CustomerDetails() {
                         />
                     </View>
                     <View
-                        style={{
-                            marginVertical: 4,
-                        }}
+                        style={styles.textInputParent}
                     >
 
                         <TextInput
-
-                            style={{
-                                borderWidth: 1,
-                                paddingHorizontal: 10,
-                                paddingVertical: 12,
-                                borderColor: "#eee",
-                                borderRadius: 2,
-                                fontFamily: "Inter_500Medium",
-                                width: "100%",
-                            }}
+                            style={styles.textInput}
                             editable={true}
                             value={lastname}
                             onChangeText={e => setLastname(e)}
@@ -158,21 +127,10 @@ export default function CustomerDetails() {
                         />
                     </View>
                     <View
-                        style={{
-                            marginVertical: 4,
-                        }}
+                        style={styles.textInputParent}
                     >
                         <TextInput
-
-                            style={{
-                                borderWidth: 1,
-                                paddingHorizontal: 10,
-                                paddingVertical: 12,
-                                borderColor: "#eee",
-                                borderRadius: 2,
-                                fontFamily: "Inter_500Medium",
-                                width: "100%",
-                            }}
+                            style={styles.textInput}
                             editable={true}
                             value={email}
                             onChangeText={e => setEmail(e)}
@@ -183,21 +141,10 @@ export default function CustomerDetails() {
                         />
                     </View>
                     <View
-                        style={{
-                            marginVertical: 4,
-                        }}
+                        style={styles.textInputParent}
                     >
                         <TextInput
-
-                            style={{
-                                borderWidth: 1,
-                                paddingHorizontal: 10,
-                                paddingVertical: 12,
-                                borderColor: "#eee",
-                                borderRadius: 2,
-                                fontFamily: "Inter_500Medium",
-                                width: "100%",
-                            }}
+                            style={styles.textInput}
                             editable={true}
                             value={phoneNumber}
                             onChangeText={e => setPhoneNumber(e)}
@@ -208,21 +155,10 @@ export default function CustomerDetails() {
                         />
                     </View>
                     <View
-                        style={{
-                            marginVertical: 4,
-                        }}
+                        style={styles.textInputParent}
                     >
                         <TextInput
-
-                            style={{
-                                borderWidth: 1,
-                                paddingHorizontal: 10,
-                                paddingVertical: 12,
-                                borderColor: "#eee",
-                                borderRadius: 2,
-                                fontFamily: "Inter_500Medium",
-                                width: "100%",
-                            }}
+                            style={styles.textInput}
                             editable={true}
                             value={address1}
                             onChangeText={e => setAddress1(e)}
@@ -233,22 +169,10 @@ export default function CustomerDetails() {
                         />
                     </View>
                     <View
-                        style={{
-                            marginVertical: 4,
-                        }}
+                        style={styles.textInputParent}
                     >
-
                         <TextInput
-
-                            style={{
-                                borderWidth: 1,
-                                paddingHorizontal: 10,
-                                paddingVertical: 12,
-                                borderColor: "#eee",
-                                borderRadius: 2,
-                                fontFamily: "Inter_500Medium",
-                                width: "100%",
-                            }}
+                            style={styles.textInput}
                             editable={true}
                             value={address2}
                             onChangeText={e => setAddress2(e)}
@@ -259,22 +183,10 @@ export default function CustomerDetails() {
                         />
                     </View>
                     <View
-                        style={{
-                            marginVertical: 4,
-                        }}
+                        style={styles.textInputParent}
                     >
-
                         <TextInput
-
-                            style={{
-                                borderWidth: 1,
-                                paddingHorizontal: 10,
-                                paddingVertical: 12,
-                                borderColor: "#eee",
-                                borderRadius: 2,
-                                fontFamily: "Inter_500Medium",
-                                width: "100%",
-                            }}
+                            style={styles.textInput}
                             editable={true}
                             value={city}
                             onChangeText={e => setCity(e)}
@@ -285,9 +197,7 @@ export default function CustomerDetails() {
                         />
                     </View>
                     <View
-                        style={{
-                            marginVertical: 4,
-                        }}
+                        style={styles.textInputParent}
                     >
                         {/* Dropdown menu */}
                         <Dropdown
@@ -332,20 +242,10 @@ export default function CustomerDetails() {
                         />
                     </View>
                     <View
-                        style={{
-                            marginVertical: 4,
-                        }}
+                        style={styles.textInputParent}
                     >
                         <TextInput
-                            style={{
-                                borderWidth: 1,
-                                paddingHorizontal: 10,
-                                paddingVertical: 12,
-                                borderColor: "#eee",
-                                borderRadius: 2,
-                                fontFamily: "Inter_500Medium",
-                                width: "100%",
-                            }}
+                            style={styles.textInput}
                             editable={true}
                             value={province}
                             onChangeText={e => setProvince(e)}
@@ -356,20 +256,10 @@ export default function CustomerDetails() {
                         />
                     </View>
                     <View
-                        style={{
-                            marginVertical: 4,
-                        }}
+                        style={styles.textInputParent}
                     >
                         <TextInput
-                            style={{
-                                borderWidth: 1,
-                                paddingHorizontal: 10,
-                                paddingVertical: 12,
-                                borderColor: "#eee",
-                                borderRadius: 2,
-                                fontFamily: "Inter_500Medium",
-                                width: "100%",
-                            }}
+                            style={styles.textInput}
                             editable={true}
                             value={zip}
                             onChangeText={e => setZip(e)}
@@ -383,8 +273,6 @@ export default function CustomerDetails() {
                 </ScrollView>
 
                 <CustomButton text='Create customer' buttonBgColor={`${Colors.blue}`} pressedButtonBgColor={`${Colors.lightBlue}`} onPress={createCustomer} fontSize={14} />
-
-
             </Container>
         </>
     )

@@ -7,12 +7,12 @@ CREATE TABLE backup_terms (
     term_description text,
     created_at TIMESTAMP,
     updated_at TIMESTAMP,
-    column is_bold boolean;  
+    is_bold boolean
 );
 INSERT INTO backup_terms (term_description, created_at, is_bold) VALUES
 ('Option to have your data backed up and restored: cell phones, notes, and tablets', '2024-03-15 13:34:28.584', false),
 ('This advisory is applicable to cellular devices only and not units such as notebooks, PCs, etc.', '2024-03-15 13:34:28.584', false),
-('Please note that software data backup  and restore procedures are not covered under Samsung"s ', '2024-03-15 13:34:28.584', false),
+('Please note that software data backup  and restore procedures are not covered under Samsung''s warranty policies, thus this portion of the repair canbe performed but on a chargeable basis.', '2024-03-15 13:34:28.584', false),
 ('Should the repair to your device entail a software reload or mainboard replacement, stored data will be lost. If we are unable to access the defective device''s data, we can attempt to back up and restore your data.', '2024-03-15 13:34:28.584', false),
 ('Data includes: Contacts, Media & Documents, which may be backed up and restored, if accessible and if not corrupted.', '2024-03-15 13:34:28.584', false),
 ('We do not back up and restore any non-factory standard applications, 3rd party applications (such as WhatsApp), programs, Microsoft, or other Office suites.', '2024-03-15 13:34:28.584', true),
@@ -62,14 +62,6 @@ CREATE TABLE tickets(
     type_of_unit varchar(40),
     ticket_number text,
     service_order_number varchar(10),
-    customer_acknowledges_terms boolean,
-    terms_one_acknowledge boolean,
-    terms_two_acknowledge boolean,
-    terms_two_denial_reason text,
-    terms_three_acknowledge boolean,
-    terms_three_denial_reason text,
-    terms_four_acknowledge boolean,
-    terms_four_denial_reason text,
     customer_signature text,
     custom_uuid uuid
 );

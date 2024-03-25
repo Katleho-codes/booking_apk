@@ -1,0 +1,75 @@
+import { StyleSheet } from "react-native";
+
+export const styles = StyleSheet.create({
+  textInputParent: { marginVertical: 4 },
+  textInput: {
+    borderWidth: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 12,
+    borderColor: "#eee",
+    borderRadius: 2,
+    fontFamily: "Inter_500Medium",
+    width: "100%",
+  },
+  dropdownInput: {
+    borderColor: "#eee",
+    borderWidth: 1,
+    borderRadius: 2,
+    paddingHorizontal: 10,
+    paddingVertical: 12,
+  },
+  dropdownInputText: {
+    fontFamily: "Inter_500Medium",
+    color: `${Colors.grey}`,
+    fontSize: 14,
+  },
+  dropdownInputPlaceholder: {
+    fontFamily: "Inter_500Medium",
+    color: `${Colors.grey}`,
+    fontSize: 14,
+  },
+  checkboxWrapper: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginVertical: 8,
+  },
+  checkboxLabel: {
+    paddingVertical: 10,
+    fontFamily: "Inter_400Regular",
+    color: `${Colors.black}`,
+  },
+  modalOpenStyles: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalContent: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#00000040",
+    padding: 10,
+  },
+  modalSignaturePadWrapper: {
+    width: width,
+    height: 400,
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 4,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    display: "flex",
+    flexDirection: "column",
+    gap: 30,
+  },
+});

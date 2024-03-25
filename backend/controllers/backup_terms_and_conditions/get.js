@@ -7,7 +7,7 @@ const getBackupTermsAndConditions = async (req, res) => {
     );
     res.json(rows);
   } catch (error) {
-    console.log(error);
+    //
   }
 };
 

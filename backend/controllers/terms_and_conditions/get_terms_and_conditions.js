@@ -7,7 +7,7 @@ const getTerms = async (req, res) => {
     );
     res.json(rows);
   } catch (error) {
-    console.log("get terms error", error);
+    //
   }
 };
 

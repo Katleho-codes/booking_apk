@@ -2,13 +2,13 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import axios from 'axios';
 import * as Crypto from 'expo-crypto';
-import * as SecureStore from 'expo-secure-store';
 import React, { useEffect, useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
 import CustomButton from '../../components/Button';
 import useDebounce from '../../hooks/useDebounce';
 import { Colors } from '../../utils/colors';
 import { datetimestamp } from '../../utils/timezone';
+import { styles } from "./style";
 
 
 type TSearchCustomer = {
@@ -27,11 +27,7 @@ export default function SearchCustomer() {
     const [lastname, setLastname] = useState("");
     const [email, setEmail] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
-    const [address1, setAddress1] = useState("");
-    const [address2, setAddress2] = useState("");
-    const [city, setCity] = useState("");
-    const [province, setProvince] = useState("");
-    const [zip, setZip] = useState("");
+
     const debouncedCustomerSearch = useDebounce(searchCustomer, 400);
     // Navigation hook
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
@@ -55,11 +51,6 @@ export default function SearchCustomer() {
                 setLastname(data?.customers[0]?.lastname)
                 setEmail(data?.customers[0]?.email)
                 setPhoneNumber(data?.customers[0]?.mobile)
-                setAddress1(data?.customers[0]?.address)
-                setAddress2(data?.customers[0]?.address_2)
-                setCity(data?.customers[0]?.city)
-                setProvince(data?.customers[0]?.state)
-                setZip(data?.customers[0]?.zip)
 
             }
         } catch (error) {
@@ -87,7 +78,7 @@ export default function SearchCustomer() {
     }
 
     const addExistingCustomer = async () => {
-        await SecureStore.setItemAsync("email", searchCustomer);
+        // await SecureStore.setItemAsync("email", searchCustomer);
         createEntry();
         navigation.navigate("DeviceInspection", {
             email: searchCustomer,
@@ -96,38 +87,17 @@ export default function SearchCustomer() {
     }
 
     return (
-        <View style={{
-            flex: 1,
-            padding: 10,
-            backgroundColor: "#fff",
-            justifyContent: 'center',
-            gap: 10
-        }}>
+        <View style={styles.searchCustomerContainer}>
             <View
 
             >
                 <Text
-                    style={{
-                        fontFamily: "Inter_600SemiBold",
-                        color: `${Colors.black}`,
-                        paddingVertical: 4,
-                        fontSize: 22,
-                        textAlign: "center",
-                        marginVertical: 10
-                    }}
+                    style={styles.searchCustomerInputLabel}
                 >
                     Search using email
                 </Text>
                 <TextInput
-                    style={{
-                        borderWidth: 1,
-                        paddingHorizontal: 10,
-                        paddingVertical: 12,
-                        borderColor: "#eee",
-                        borderRadius: 2,
-                        fontFamily: "Inter_500Medium",
-                        width: "100%",
-                    }}
+                    style={styles.searchCustomerInput}
                     value={searchCustomer}
                     onChangeText={text => setSearchCustomer(text)}
                     editable={true}
@@ -148,12 +118,7 @@ export default function SearchCustomer() {
                                 }}
                             >
                                 <Text
-                                    style={{
-                                        fontFamily: "Inter_500Medium",
-                                        color: `${Colors.blue}`,
-                                        paddingVertical: 4,
-                                        textAlign: "center"
-                                    }}
+                                    style={styles.searchCustomerResultText}
                                 >
                                     {x.email}
                                 </Text>
