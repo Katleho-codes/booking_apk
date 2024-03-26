@@ -9,7 +9,15 @@ import useDebounce from '../../hooks/useDebounce';
 import { Colors } from '../../utils/colors';
 import { datetimestamp } from '../../utils/timezone';
 import { styles } from "./style";
+import moment from 'moment';
 
+// console.log(moment(new Date(
+//     Date.now() + 1000 * 60 * -new Date().getTimezoneOffset()
+// )
+//     .toISOString()
+//     .replace("T", " ")
+//     .replace("Z", "")).format("YYMMDDhhmmss")
+// )
 
 type TSearchCustomer = {
     id: number;
