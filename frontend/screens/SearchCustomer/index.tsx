@@ -35,6 +35,11 @@ export default function SearchCustomer() {
     const [lastname, setLastname] = useState("");
     const [email, setEmail] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
+    const [address, setAddress] = useState("");
+    const [address2, setAddress2] = useState("");
+    const [city, setCity] = useState("");
+    const [state, setState] = useState("");
+    const [zip, setZip] = useState("")
 
     const debouncedCustomerSearch = useDebounce(searchCustomer, 400);
     // Navigation hook
@@ -58,11 +63,17 @@ export default function SearchCustomer() {
                 setFirstname(data?.customers[0]?.firstname)
                 setLastname(data?.customers[0]?.lastname)
                 setEmail(data?.customers[0]?.email)
-                setPhoneNumber(data?.customers[0]?.mobile)
+                setPhoneNumber(data?.customers[0]?.mobile);
+                setAddress(data?.customers[0]?.address);
+                setAddress2(data?.customers[0]?.address_2);
+                setCity(data?.customers[0]?.city);
+                setState(data?.customers[0]?.state);
+                setZip(data?.customers[0]?.zip);
+
 
             }
         } catch (error) {
-            //    
+            // console.log("search repair customer error", error)
         }
 
     }
@@ -76,12 +87,12 @@ export default function SearchCustomer() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    firstname, lastname, email, phoneNumber, createdAt, customUUID
+                    firstname, lastname, email, phoneNumber, createdAt, customUUID, address, address2, city, state, zip
                 })
             })
             const data = await response.json;
         } catch (error) {
-            //    
+            // console.log("cannot create entry frontend", error)
         }
     }
 
@@ -90,7 +101,8 @@ export default function SearchCustomer() {
         createEntry();
         navigation.navigate("DeviceInspection", {
             email: searchCustomer,
-            customUUID: customUUID
+            customUUID: customUUID,
+            firstname: firstname, lastname: lastname, phoneNumber: phoneNumber, address: address, address2: address2, city: city, state: state, zip: zip
         });
     }
 

@@ -1,8 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import * as Crypto from 'expo-crypto';
-import React, { useState } from 'react';
-import { ScrollView, TextInput, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ScrollView, TextInput, View, Text } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import CustomButton from '../../components/Button';
 import Container from '../../components/Container';
@@ -11,6 +11,7 @@ import { Colors } from '../../utils/colors';
 import { provinces } from "../../utils/provinces";
 import { datetimestamp } from '../../utils/timezone';
 import { styles } from "./style";
+import axios from "axios";
 
 
 export default function CustomerDetails() {
@@ -18,17 +19,50 @@ export default function CustomerDetails() {
     const [lastname, setLastname] = useState("");
     const [email, setEmail] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
-    const [address1, setAddress1] = useState("");
+    const [address, setAddress] = useState("");
     const [address2, setAddress2] = useState("");
     const [city, setCity] = useState("");
-    const [province, setProvince] = useState("");
+    const [state, setState] = useState("");
+    const [gspnProvince, setGSPNProvince] = useState("")
     const [provinceFocus, setProvinceFocus] = useState(false)
     const [zip, setZip] = useState("");
+
+    const [searchCustomer, setSearchCustomer] = useState("");
+
 
     // Navigation hook
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
     const customUUID = Crypto.randomUUID();
+
+
+
+    useEffect(() => {
+        checkIfCustomerWasHere()
+    }, [email])
+    const checkIfCustomerWasHere = async () => {
+
+        try {
+            const { data } = await axios.get(`${process.env.EXPO_PUBLIC_REPAIRSHOPR_API_SUBDOMAIN}/customers?query=${email}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${process.env.EXPO_PUBLIC_REPAIRSHOPR_BEARER_TOKEN}`
+                },
+            })
+            // console.log(data)
+            if (data?.customers[0]?.email === email) {
+                // setResult(data?.customers)
+                setFirstname(data?.customers[0]?.firstname)
+                setLastname(data?.customers[0]?.lastname)
+                setEmail(data?.customers[0]?.email)
+                setPhoneNumber(data?.customers[0]?.mobile)
+
+            }
+        } catch (error) {
+            //    
+        }
+
+    }
     const createEntry = async () => {
         const createdAt = datetimestamp;
         const values = {
@@ -36,10 +70,10 @@ export default function CustomerDetails() {
             lastname,
             email,
             phoneNumber,
-            address1,
+            address,
             address2,
             city,
-            province,
+            state,
             zip,
             createdAt,
             customUUID
@@ -72,10 +106,10 @@ export default function CustomerDetails() {
                     "lastname": lastname,
                     "email": email,
                     "phone": phoneNumber,
-                    "address": address1,
+                    "address": address,
                     "address_2": address2,
                     "city": city,
-                    "state": province,
+                    "state": state,
                     "zip": zip,
                 })
             })
@@ -83,7 +117,7 @@ export default function CustomerDetails() {
             createEntry();
             navigation.navigate("DeviceInspection", {
                 email: email, firstname: firstname, lastname: lastname, createdAt: datetimestamp, phoneNumber: phoneNumber,
-                customUUID: customUUID
+                customUUID: customUUID, provinceCode: gspnProvince, address: address, city: city, zip: zip
             });
         } catch (error) {
             //   
@@ -140,6 +174,7 @@ export default function CustomerDetails() {
                             keyboardType="email-address"
                         />
                     </View>
+                    <Text>Please fill in email first to check if you've been here</Text>
                     <View
                         style={styles.textInputParent}
                     >
@@ -160,8 +195,8 @@ export default function CustomerDetails() {
                         <TextInput
                             style={styles.textInput}
                             editable={true}
-                            value={address1}
-                            onChangeText={e => setAddress1(e)}
+                            value={address}
+                            onChangeText={e => setAddress(e)}
                             placeholder='Address Line 1'
                             placeholderTextColor={`${Colors.grey}`}
                             maxLength={100}
@@ -220,14 +255,15 @@ export default function CustomerDetails() {
                             maxHeight={300}
                             labelField="label"
                             valueField="value"
-                            placeholder={!provinceFocus ? "Select province" : "..."}
+                            placeholder={!provinceFocus ? "Select state" : "..."}
                             searchPlaceholder="Search..."
-                            value={province}
+                            value={state}
                             onFocus={() => setProvinceFocus(true)}
                             onBlur={() => setProvinceFocus(false)}
                             onChange={(item: any) => {
-                                setProvince(item.value);
+                                setState(item.value);
                                 setProvinceFocus(false);
+                                setGSPNProvince(item.provinceCode)
                             }}
                             itemTextStyle={{
                                 fontFamily: "Inter_500Medium",
@@ -244,16 +280,7 @@ export default function CustomerDetails() {
                     <View
                         style={styles.textInputParent}
                     >
-                        <TextInput
-                            style={styles.textInput}
-                            editable={true}
-                            value={province}
-                            onChangeText={e => setProvince(e)}
-                            placeholder='Province'
-                            placeholderTextColor={`${Colors.grey}`}
-                            maxLength={100}
-                            keyboardType="default"
-                        />
+                        <Text>{gspnProvince}</Text>
                     </View>
                     <View
                         style={styles.textInputParent}
