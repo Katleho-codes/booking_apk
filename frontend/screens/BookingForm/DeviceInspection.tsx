@@ -56,7 +56,7 @@ export default function DeviceInspection() {
 
     const d = new Date(
     )
-    const [date, setDate] = useState(d);
+    const [purchaseDate, setPurchaseDate] = useState(d);
 
     // Terms and conditions sigpad
     const [userTermsSignature, setUserTermsSignature] = useState("");
@@ -84,6 +84,7 @@ export default function DeviceInspection() {
             modelNumber,
             serialNumber,
             IMEI,
+            purchaseDate,
             isBackUpNeedCheckboxEnabled,
             warranty,
             phoneNumber,
@@ -126,93 +127,7 @@ export default function DeviceInspection() {
         getCustomerId()
     }, [email]);
 
-    const createServiceOrder = async () => {
-        const generateTimeStampForPacCode = moment(new Date(
-            Date.now() + 1000 * 60 * -new Date().getTimezoneOffset()
-        )
-            .toISOString()
-            .replace("T", " ")
-            .replace("Z", "")).format("YYMMDDhhmmss");
-        const todaysDate = moment(new Date(
-            Date.now() + 1000 * 60 * -new Date().getTimezoneOffset()
-        )
-            .toISOString()
-            .replace("T", " ")
-            .replace("Z", "")).format("YYYYMMDD");
 
-        const values = {
-            "IsCommonHeader": {
-                "Company": "C720",
-                "AscCode": "1730640",
-                "Lang": "EN",
-                "Country": "ZA",
-                "Pac": `9999999${generateTimeStampForPacCode}`
-            },
-            "IvCreationCheck": `${todaysDate}`,
-            "IsHeaderInfo": {
-                "AscJobNo": ""
-            },
-            "IsBpInfo": {
-                "CustomerCode": "",
-                "Addrnumber": ""
-            },
-            "IsModelInfo": {
-                "IMEI": `${IMEI}`,
-                "PurchaseDate": "",
-                "Accessory": "",
-                "DefectDesc": `${fault}`,
-                "Remark": "",
-                "WtyException": ""
-            },
-            "IsJobInfo": {
-                "SymCode1": `${symptom1}`,
-                "SymCode2": `${symptom2}`,
-                "SymCode3": `${symptom3}`,
-                "SvcType": "CI",
-                "QueueTokenNo": "",
-                "WtyType": ""
-            },
-            "IsDateInfo": {
-                "RequestDate": "",
-                "UntRecvDate": "",
-                "UntRecvTime": ""
-            },
-            "IsWtyInfo": {
-                "WtyConsType": ""
-            },
-            "IsBpDetail": {
-                "CustFirstName": "Kimberly",
-                "CustLastName": " Cuffie",
-                "CustHomePhone": "",
-                "CustOfficePhone": "",
-                "CustMobilePhone": "",
-                "CustEmail": "",
-                "CustAddrStreet2": "",
-                "CustAddrStreet1": "1895 Kamp St",
-                "CustCity": "Cape Town",
-                "CustState": "WC",
-                "CustZipcode": "7489",
-                "Country": "RSA"
-            }
-        }
-        // console.log("values", values)
-        const response = fetch(`${process.env.EXPO_PUBLIC_IPAAS_LINK}/CreateSO/1.0/ImportSet`, {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${process.env.EXPO_PUBLIC_IPAAS_TOKEN}`
-            },
-            body: JSON.stringify(values)
-        }).then((res) => res.json(
-
-        )).then((data) => {
-            if (data) {
-                // console.log("so data", data)
-            }
-        }).catch((error) => {
-            // console.log("so error", error)
-        })
-    }
 
     const checkWarranty = async () => {
         const generateTimeStampForPacCode = moment(new Date(
@@ -223,7 +138,7 @@ export default function DeviceInspection() {
             .replace("Z", "")).format("YYMMDDhhmmss");
 
 
-        const formattedDate = moment(date).format("YYYYMMDD");
+        const formattedDate = moment(purchaseDate).format("YYYYMMDD");
         // console.log(formattedDate)
         const values = {
             "IsCommonHeader": {
@@ -234,7 +149,7 @@ export default function DeviceInspection() {
                 "Pac": `9999999${generateTimeStampForPacCode}`
             },
             "IvModel": `${modelNumber}`,
-            "IvPurchaseDate": `${date ? formattedDate : ""}`,
+            "IvPurchaseDate": `${purchaseDate ? formattedDate : ""}`,
             "IvSerialNo": `${serialNumber}`,
             "IvIMEI": `${IMEI}`
 
@@ -255,7 +170,7 @@ export default function DeviceInspection() {
                 setWarranty(data?.Return?.EvWtyType);
             }
         }).catch((error) => {
-            // console.log("warranty error", error)
+            console.log("warranty error", error)
         })
     }
     useEffect(() => {
@@ -266,7 +181,7 @@ export default function DeviceInspection() {
         }
         else if (warranty !== "LP") {
             setTicketTypeId(21878);
-            setWarrantyCode(69476)
+            setWarrantyCode(69477)
         }
     }, [serialNumber]);
 
@@ -490,8 +405,8 @@ export default function DeviceInspection() {
                                 }}>
                                     <DateTimePicker
                                         mode="single"
-                                        date={date}
-                                        onChange={(params) => setDate(params?.date)}
+                                        date={purchaseDate}
+                                        onChange={(params) => setPurchaseDate(params?.date)}
                                     />
                                     <Pressable
 

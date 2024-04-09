@@ -78,3 +78,5 @@ CREATE TABLE tickets(
     customer_signature text,
     custom_uuid uuid
 );
+ALTER TABLE tickets
+ADD COLUMN purchase_date text;
