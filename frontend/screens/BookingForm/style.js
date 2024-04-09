@@ -2,6 +2,21 @@ import { StyleSheet, useWindowDimensions } from "react-native";
 import { Colors } from "../../utils/colors";
 
 export const styles = StyleSheet.create({
+  textInputWithButtonFlexed: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    borderWidth: 1,
+    borderColor: "#eee",
+    borderRadius: 2,
+    marginVertical: 4,
+    paddingHorizontal: 10,
+  },
+  textInputWithButtonFlexedInput: {
+    fontFamily: "Inter_500Medium",
+    paddingVertical: 12,
+    width: "90%",
+  },
   textInputParent: { marginVertical: 4 },
   textInput: {
     borderWidth: 1,

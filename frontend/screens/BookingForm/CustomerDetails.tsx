@@ -1,8 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import axios from "axios";
 import * as Crypto from 'expo-crypto';
 import React, { useEffect, useState } from 'react';
-import { ScrollView, TextInput, View, Text } from 'react-native';
+import { ScrollView, StatusBar, Text, TextInput, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import CustomButton from '../../components/Button';
 import Container from '../../components/Container';
@@ -11,7 +12,6 @@ import { Colors } from '../../utils/colors';
 import { provinces } from "../../utils/provinces";
 import { datetimestamp } from '../../utils/timezone';
 import { styles } from "./style";
-import axios from "axios";
 
 
 export default function CustomerDetails() {
@@ -126,6 +126,7 @@ export default function CustomerDetails() {
     }
     return (
         <>
+            <StatusBar />
             <Header text={"Customer Details"} />
             <Container>
                 <ScrollView>

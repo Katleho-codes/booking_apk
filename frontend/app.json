@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "booking_apk",
-    "slug": "booking_apk",
+    "slug": "booking-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -24,26 +24,33 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.mm_all_allelectronics.mmallelectronics"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-secure-store"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "2e50c3c7-eb9c-4d90-87c7-86a79ff735b7"
+      }
+    },
+    "owner": "mm_all_electronics"
   },
   "plugins": [
     [
       "expo-camera",
       {
-        "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
+        "cameraPermission": "Allow MM ALL ELECTRONICS to access your camera."
       }
     ],
     [
       "expo-secure-store",
       {
-        "faceIDPermission": "Allow $(PRODUCT_NAME) to access your Face ID biometric data."
+        "faceIDPermission": "Allow MM ALL ELECTRONICS to access your Face ID biometric data."
       }
     ]
   ]

@@ -64,6 +64,7 @@ CREATE TABLE tickets(
     updated_at TIMESTAMP,
     unit_fault varchar(50),
     fault_occurence text,
+    purchase_date text,
     unit_status varchar(50),
     type_of_unit varchar(40),
     ticket_number text,
@@ -78,5 +79,3 @@ CREATE TABLE tickets(
     customer_signature text,
     custom_uuid uuid
 );
-ALTER TABLE tickets
-ADD COLUMN purchase_date text;

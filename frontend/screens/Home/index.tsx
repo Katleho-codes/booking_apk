@@ -1,7 +1,6 @@
 
-import React, { useState } from 'react'
+import React from 'react'
 import Container from '../../components/Container'
-import useDebounce from '../../hooks/useDebounce'
 
 import { useNavigation } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
@@ -14,10 +13,6 @@ import { styles } from './styles'
 
 
 export default function Home() {
-    const [searchCustomer, setSearchCustomer] = useState("")
-    const debouncedCustomerSearch = useDebounce(searchCustomer, 400);
-    // const [isModalVisible, setIsModalVisible] = useState(false)
-
     // Navigation hook
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
