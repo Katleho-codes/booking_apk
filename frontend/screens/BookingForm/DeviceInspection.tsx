@@ -1,12 +1,12 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import axios from 'axios';
-import { CameraView, useCameraPermissions } from 'expo-camera/next';
+import { CameraView, useCameraPermissions, Camera } from 'expo-camera/next';
 import Checkbox from 'expo-checkbox';
 import * as WebBrowser from 'expo-web-browser';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { Alert, Modal, Pressable, ScrollView, StatusBar, Text, TextInput, View } from 'react-native';
+import { Alert, Modal, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import DateTimePicker from 'react-native-ui-datepicker';
 import CustomButton from '../../components/Button';
@@ -16,6 +16,8 @@ import { Colors } from '../../utils/colors';
 import { faultOccurences } from '../../utils/faultOccurences';
 import { datetimestamp } from '../../utils/timezone';
 import { styles } from './style';
+import Accordion from '../../components/Accordion';
+import { StatusBar } from 'expo-status-bar';
 
 
 export default function DeviceInspection() {
@@ -50,8 +52,10 @@ export default function DeviceInspection() {
 
     const [IMEI, setIMEI] = useState("");
     const [imeiScanOpen, setImeiScanOpen] = useState(false)
+
     const [serialNumber, setSerialNumber] = useState("")
     const [serialNumberScanOpen, setserialNumberScanOpen] = useState(false)
+
     const [modelNumber, setModelNumber] = useState("")
     const [modelScanOpen, setModelScanOpen] = useState(false)
     const [warranty, setWarranty] = useState("");
@@ -65,16 +69,16 @@ export default function DeviceInspection() {
     }
 
 
-    const [facing, setFacing] = useState('back');
+
+
+
     const [permission, requestPermission] = useCameraPermissions();
+    if (permission === null) requestPermission()
+    if (!permission) requestPermission();
+    if (permission?.granted !== true) requestPermission();
 
-    if (!permission) { }
 
-    if (!permission?.granted) { }
 
-    function toggleCameraFacing() {
-        setFacing(current => (current === 'back' ? 'front' : 'back'));
-    }
 
 
     // console.log(date)
@@ -148,10 +152,10 @@ export default function DeviceInspection() {
         // console.log(formattedDate)
         const values = {
             "IsCommonHeader": {
-                "Company": "C720",
-                "AscCode": "1730640",
-                "Lang": "EN",
-                "Country": "ZA",
+                "Company": `${process.env.EXPO_PUBLIC_IPAAS_COMPANY}`,
+                "AscCode": `${process.env.EXPO_PUBLIC_IPAAS_ASC_CODE}`,
+                "Lang": `${process.env.EXPO_PUBLIC_IPAAS_LANG}`,
+                "Country": `${process.env.EXPO_PUBLIC_IPAAS_COUNTRY}`,
                 "Pac": `9999999${generateTimeStampForPacCode}`
             },
             "IvModel": `${modelNumber}`,
@@ -228,30 +232,28 @@ export default function DeviceInspection() {
     }
 
     const openTermsAndConditions = async () => {
-        await WebBrowser.openBrowserAsync(`${process.env.EXPO_PUBLIC_TERMS_LINK}`);
+        await WebBrowser.openBrowserAsync(`${process.env.EXPO_PUBLIC_TERMS_LINK}`,);
     }
     const openBackupTermsAndConditions = async () => {
         await WebBrowser.openBrowserAsync(`${process.env.EXPO_PUBLIC_BACKUP_TERMS_LINK}`);
     }
     const toggleBackupNeededCheckbox = () => {
         setIsBackUpNeedCheckboxEnabled(prev => !prev);
-        openBackupTermsAndConditions()
+        if (!isBackUpNeedCheckboxEnabled) openBackupTermsAndConditions()
     }
 
 
     return (
-        <>
-            <StatusBar />
-            <Container>
-                <SectionHeaderTitle title='Device Inspection' />
-                <ScrollView>
-                    <View>
-                        <Text style={{
-                            fontFamily: "Inter_500Medium",
-                            marginVertical: 15,
-                            color: `${Colors.black}`,
-                            textAlign: "center"
-                        }}>This section is for the customer</Text>
+
+        <Container>
+            <StatusBar translucent={false} hidden={false} />
+            <SectionHeaderTitle title='Device Inspection' />
+
+
+            <ScrollView>
+
+                <Accordion title='Customer section' content={
+                    <>
                         <View
                             style={styles.textInputParent}
                         >
@@ -317,310 +319,335 @@ export default function DeviceInspection() {
                             <Checkbox value={isBackUpNeedCheckboxEnabled} onValueChange={toggleBackupNeededCheckbox} />
                         </View>
 
-                        <Text style={{
-                            fontFamily: "Inter_500Medium",
-                            marginVertical: 15,
-                            color: `${Colors.black}`,
-                            textAlign: "center"
-                        }}>Please let the booking agent fill in this section</Text>
+                    </>
+                } />
+                <Accordion title='Consultant section' content={
+                    <>
+                        <View>
 
-                        <View
-                            style={
-                                styles.textInputWithButtonFlexed
-                            }
-                        >
-                            <TextInput
-                                placeholder='Please fill in IMEI'
-                                placeholderTextColor={`${Colors.grey}`}
-                                style={styles.textInputWithButtonFlexedInput}
-                                editable={true}
-                                value={IMEI}
-                                onChangeText={e => setIMEI(e)}
-                                keyboardType='numeric'
-                            />
-                            <Pressable onPress={() => setImeiScanOpen(!imeiScanOpen)}>
-                                <Text style={{
-                                    fontFamily: "Inter_500Medium",
-                                }}>Scan</Text>
-                            </Pressable>
-                        </View>
-                        <Modal
-                            animationType="slide"
-                            transparent={true}
-                            visible={imeiScanOpen}
-                            onRequestClose={() => {
-                                Alert.alert('Modal has been closed.');
-                                setImeiScanOpen(!imeiScanOpen);
-                            }}>
+                            <Text style={{
+                                fontFamily: "Inter_500Medium",
+                                marginVertical: 15,
+                                color: `${Colors.black}`,
+                                textAlign: "center"
+                            }}>Please let the booking agent fill in this section</Text>
 
-
-                            <View style={{
-                                justifyContent: "space-between",
-                                flex: 1,
-                                padding: 10
-                            }}>
-                                <CameraView
-                                    focusable
-                                    style={{ flex: 1 }}
-                                    barCodeScannerSettings={{
-                                        barCodeTypes: ["qr", 'aztec', 'ean13', 'ean8', 'qr', 'pdf417', 'upc_e', 'datamatrix', 'code39', 'code93', 'itf14', 'codabar', 'code128', 'upc_a'],
-                                    }}
-                                    onBarcodeScanned={(BarcodeScanningResult) => {
-                                        setIMEI(BarcodeScanningResult.data);
-                                        // console.log(BarcodeScanningResult.data)
-                                        // console.log(BarcodeScanningResult.type)
-                                    }}
-                                    facing={facing}>
-
-                                </CameraView>
-                                <View style={{
-                                    padding: 20,
-                                    display: "flex",
-                                    gap: 20,
-                                    justifyContent: "center",
-                                    backgroundColor: "#fff"
-
+                            <View
+                                style={
+                                    styles.textInputWithButtonFlexed
+                                }
+                            >
+                                <TextInput
+                                    placeholder='Please fill in IMEI'
+                                    placeholderTextColor={`${Colors.grey}`}
+                                    style={styles.textInputWithButtonFlexedInput}
+                                    editable={true}
+                                    value={IMEI}
+                                    onChangeText={e => setIMEI(e)}
+                                    keyboardType='numeric'
+                                />
+                                <Pressable onPress={() => setImeiScanOpen(!imeiScanOpen)} style={{
+                                    paddingHorizontal: 6,
+                                    paddingVertical: 3,
                                 }}>
                                     <Text style={{
                                         fontFamily: "Inter_500Medium",
-                                        color: `${Colors.grey}`,
-                                        fontSize: 14,
-                                        textAlign: "center"
-                                    }}>{IMEI ? IMEI : ""}</Text>
-                                    <Pressable
-                                        onPress={() => setImeiScanOpen(!imeiScanOpen)}>
-                                        <Text style={{
-                                            textAlign: "center", fontFamily: "Inter_500Medium",
-                                            color: `${Colors.grey}`,
-                                        }}>Close</Text>
-                                    </Pressable>
-                                </View>
-
+                                    }}>Scan</Text>
+                                </Pressable>
                             </View>
-
-                        </Modal>
-
-                        <View
-                            style={styles.textInputWithButtonFlexed}
-                        >
-                            <TextInput
-                                placeholder='Please fill in Model'
-                                placeholderTextColor={`${Colors.grey}`}
-                                style={styles.textInputWithButtonFlexedInput}
-                                editable={true}
-                                value={modelNumber}
-                                onChangeText={e => setModelNumber(e)}
-                            />
-                            <Pressable onPress={() => setModelScanOpen(!modelScanOpen)}>
-                                <Text style={{
-                                    fontFamily: "Inter_500Medium",
-                                }}>Scan</Text>
-                            </Pressable>
-                        </View>
-                        <Modal
-                            animationType="slide"
-                            transparent={true}
-                            visible={modelScanOpen}
-                            onRequestClose={() => {
-                                Alert.alert('Modal has been closed.');
-                                setModelScanOpen(!modelScanOpen);
-                            }}>
+                            <Modal
+                                animationType="slide"
+                                transparent={true}
+                                visible={imeiScanOpen}
+                                onRequestClose={() => {
+                                    Alert.alert('Modal has been closed.');
+                                    setImeiScanOpen(!imeiScanOpen);
+                                }}>
 
 
-                            <View style={{
-                                justifyContent: "space-between",
-                                flex: 1,
-                                padding: 10
-                            }}>
-                                <CameraView
-                                    focusable
-                                    style={{ flex: 1 }}
-                                    barCodeScannerSettings={{
-                                        barCodeTypes: ["qr", 'aztec', 'ean13', 'ean8', 'qr', 'pdf417', 'upc_e', 'datamatrix', 'code39', 'code93', 'itf14', 'codabar', 'code128', 'upc_a'],
-                                    }}
-                                    onBarcodeScanned={(BarcodeScanningResult) => {
-                                        setModelNumber(BarcodeScanningResult.data);
-                                        // console.log(BarcodeScanningResult.data)
-                                        // console.log(BarcodeScanningResult.type)
-                                    }}
-                                    facing={facing}>
-
-                                </CameraView>
                                 <View style={{
-                                    padding: 20,
-                                    display: "flex",
-                                    gap: 20,
-                                    justifyContent: "center",
-                                    backgroundColor: "#fff"
+                                    justifyContent: "space-between",
+                                    flex: 1,
+                                    padding: 10
+                                }}>
+                                    <CameraView
+                                        focusable
+                                        style={{ flex: 1 }}
+                                        barCodeScannerSettings={{
+                                            barCodeTypes: ["qr", 'aztec', 'ean13', 'ean8', 'qr', 'pdf417', 'upc_e', 'datamatrix', 'code39', 'code93', 'itf14', 'codabar', 'code128', 'upc_a'],
+                                        }}
+                                        onBarcodeScanned={(BarcodeScanningResult) => {
+                                            setIMEI(BarcodeScanningResult.data);
+                                            // console.log(BarcodeScanningResult.data)
+                                            // console.log(BarcodeScanningResult.type)
+                                        }}
+                                    >
 
+                                    </CameraView>
+                                    <View style={{
+                                        padding: 20,
+                                        display: "flex",
+                                        gap: 20,
+                                        justifyContent: "center",
+                                        backgroundColor: "#fff"
+
+                                    }}>
+                                        <Text style={{
+                                            fontFamily: "Inter_500Medium",
+                                            color: `${Colors.grey}`,
+                                            fontSize: 14,
+                                            textAlign: "center"
+                                        }}>{IMEI ? IMEI : ""}</Text>
+                                        <Pressable
+                                            onPress={() => setImeiScanOpen(!imeiScanOpen)}>
+                                            <Text style={{
+                                                textAlign: "center", fontFamily: "Inter_500Medium",
+                                                color: `${Colors.grey}`,
+                                            }}>Close</Text>
+                                        </Pressable>
+                                    </View>
+
+                                </View>
+                            </Modal>
+
+                            <View
+                                style={styles.textInputWithButtonFlexed}
+                            >
+                                <TextInput
+                                    placeholder='Please fill in Model'
+                                    placeholderTextColor={`${Colors.grey}`}
+                                    style={styles.textInputWithButtonFlexedInput}
+                                    editable={true}
+                                    value={modelNumber}
+                                    onChangeText={e => setModelNumber(e)}
+                                />
+                                <Pressable onPress={() => setModelScanOpen(!modelScanOpen)} style={{
+                                    paddingHorizontal: 6,
+                                    paddingVertical: 3,
                                 }}>
                                     <Text style={{
                                         fontFamily: "Inter_500Medium",
-                                        color: `${Colors.grey}`,
-                                        fontSize: 14,
-                                        textAlign: "center"
-                                    }}>{modelNumber ? modelNumber : ""}</Text>
-                                    <Pressable
-                                        onPress={() => setModelScanOpen(!modelScanOpen)}>
+                                    }}>Scan</Text>
+                                </Pressable>
+                            </View>
+                            <Modal
+                                animationType="slide"
+                                transparent={true}
+                                visible={modelScanOpen}
+                                onRequestClose={() => {
+                                    Alert.alert('Modal has been closed.');
+                                    setModelScanOpen(!modelScanOpen);
+                                }}>
+
+
+                                <View style={{
+                                    justifyContent: "space-between",
+                                    flex: 1,
+                                    padding: 10
+                                }}>
+                                    <CameraView
+                                        focusable
+                                        style={{ flex: 1 }}
+                                        barCodeScannerSettings={{
+                                            barCodeTypes: ["qr", 'aztec', 'ean13', 'ean8', 'qr', 'pdf417', 'upc_e', 'datamatrix', 'code39', 'code93', 'itf14', 'codabar', 'code128', 'upc_a'],
+                                        }}
+                                        onBarcodeScanned={(BarcodeScanningResult) => {
+                                            setModelNumber(BarcodeScanningResult.data);
+                                            // console.log(BarcodeScanningResult.data)
+                                            // console.log(BarcodeScanningResult.type)
+                                        }}>
+
+                                    </CameraView>
+                                    <View style={{
+                                        padding: 20,
+                                        display: "flex",
+                                        gap: 20,
+                                        justifyContent: "center",
+                                        backgroundColor: "#fff"
+
+                                    }}>
                                         <Text style={{
-                                            textAlign: "center", fontFamily: "Inter_500Medium",
+                                            fontFamily: "Inter_500Medium",
                                             color: `${Colors.grey}`,
-                                        }}>Close</Text>
-                                    </Pressable>
+                                            fontSize: 14,
+                                            textAlign: "center"
+                                        }}>{modelNumber ? modelNumber : ""}</Text>
+                                        <Pressable
+                                            onPress={() => setModelScanOpen(!modelScanOpen)}>
+                                            <Text style={{
+                                                textAlign: "center", fontFamily: "Inter_500Medium",
+                                                color: `${Colors.grey}`,
+                                            }}>Close</Text>
+                                        </Pressable>
+                                    </View>
+
                                 </View>
 
-                            </View>
-
-                        </Modal>
-                        <View
-                            style={styles.textInputWithButtonFlexed}
-                        >
-                            <TextInput
-                                placeholder='Please fill in Serial'
-                                placeholderTextColor={`${Colors.grey}`}
-                                style={styles.textInputWithButtonFlexedInput}
-                                editable={true}
-                                value={serialNumber}
-                                onChangeText={e => setSerialNumber(e)}
-                            />
-                            <Pressable onPress={() => setserialNumberScanOpen(!serialNumberScanOpen)}>
-                                <Text style={{
-                                    fontFamily: "Inter_500Medium",
-                                }}>Scan</Text>
-                            </Pressable>
-                        </View>
-                        <Modal
-                            animationType="slide"
-                            transparent={true}
-                            visible={serialNumberScanOpen}
-                            onRequestClose={() => {
-                                Alert.alert('Modal has been closed.');
-                                setserialNumberScanOpen(!serialNumberScanOpen);
-                            }}>
-
-
-                            <View style={{
-                                justifyContent: "space-between",
-                                flex: 1,
-                                padding: 10
-                            }}>
-                                <CameraView
-                                    focusable
-                                    style={{ flex: 1 }}
-                                    barCodeScannerSettings={{
-                                        barCodeTypes: ["qr", 'aztec', 'ean13', 'ean8', 'qr', 'pdf417', 'upc_e', 'datamatrix', 'code39', 'code93', 'itf14', 'codabar', 'code128', 'upc_a'],
-                                    }}
-                                    onBarcodeScanned={(BarcodeScanningResult) => {
-                                        setSerialNumber(BarcodeScanningResult.data);
-                                        // console.log(BarcodeScanningResult.data)
-                                        // console.log(BarcodeScanningResult.type)
-                                    }}
-                                    facing={facing}>
-
-                                </CameraView>
-                                <View style={{
-                                    padding: 20,
-                                    display: "flex",
-                                    gap: 20,
-                                    justifyContent: "center",
-                                    backgroundColor: "#fff"
-
+                            </Modal>
+                            <View
+                                style={styles.textInputWithButtonFlexed}
+                            >
+                                <TextInput
+                                    placeholder='Please fill in Serial'
+                                    placeholderTextColor={`${Colors.grey}`}
+                                    style={styles.textInputWithButtonFlexedInput}
+                                    editable={true}
+                                    value={serialNumber}
+                                    onChangeText={e => setSerialNumber(e)}
+                                />
+                                <Pressable onPress={() => setserialNumberScanOpen(!serialNumberScanOpen)} style={{
+                                    paddingHorizontal: 6,
+                                    paddingVertical: 3,
                                 }}>
                                     <Text style={{
                                         fontFamily: "Inter_500Medium",
-                                        color: `${Colors.grey}`,
-                                        fontSize: 14,
-                                        textAlign: "center"
-                                    }}>{serialNumber ? serialNumber : ""}</Text>
-                                    <Pressable
-                                        onPress={() => setserialNumberScanOpen(!serialNumberScanOpen)}>
+                                    }}>Scan</Text>
+                                </Pressable>
+                            </View>
+                            <Modal
+                                animationType="slide"
+                                transparent={true}
+                                visible={serialNumberScanOpen}
+                                onRequestClose={() => {
+                                    Alert.alert('Modal has been closed.');
+                                    setserialNumberScanOpen(!serialNumberScanOpen);
+                                }}>
+
+
+                                <View style={{
+                                    justifyContent: "space-between",
+                                    flex: 1,
+                                    padding: 10
+                                }}>
+                                    <CameraView
+                                        focusable
+                                        style={{ flex: 1 }}
+                                        barCodeScannerSettings={{
+                                            barCodeTypes: ["qr", 'aztec', 'ean13', 'ean8', 'qr', 'pdf417', 'upc_e', 'datamatrix', 'code39', 'code93', 'itf14', 'codabar', 'code128', 'upc_a'],
+                                        }}
+                                        onBarcodeScanned={(BarcodeScanningResult) => {
+                                            setSerialNumber(BarcodeScanningResult.data);
+                                            // console.log(BarcodeScanningResult.data)
+                                            // console.log(BarcodeScanningResult.type)
+                                        }}>
+
+                                    </CameraView>
+                                    <View style={{
+                                        padding: 20,
+                                        display: "flex",
+                                        gap: 20,
+                                        justifyContent: "center",
+                                        backgroundColor: "#fff"
+
+                                    }}>
                                         <Text style={{
-                                            textAlign: "center", fontFamily: "Inter_500Medium",
+                                            fontFamily: "Inter_500Medium",
                                             color: `${Colors.grey}`,
-                                        }}>Close</Text>
-                                    </Pressable>
+                                            fontSize: 14,
+                                            textAlign: "center"
+                                        }}>{serialNumber ? serialNumber : ""}</Text>
+                                        <Pressable
+                                            onPress={() => setserialNumberScanOpen(!serialNumberScanOpen)}>
+                                            <Text style={{
+                                                textAlign: "center", fontFamily: "Inter_500Medium",
+                                                color: `${Colors.grey}`,
+                                            }}>Close</Text>
+                                        </Pressable>
+                                    </View>
+
                                 </View>
 
+                            </Modal>
+                            {warranty ? <Text style={{
+                                fontFamily: "Inter_500Medium",
+                                color: `${Colors.black}`,
+                                marginVertical: 6,
+                                textAlign: "center"
+                            }}>Unit is {warranty === "LP" ? "IW" : warranty}</Text> : ""}
+
+                            <View
+                                style={styles.textInputParent}
+                            >
+                                <TextInput
+                                    placeholder='Item condition'
+                                    placeholderTextColor={`${Colors.grey}`}
+                                    style={styles.textInput}
+                                    editable={true}
+                                    value={itemCondition}
+                                    onChangeText={e => setItemCondition(e)}
+                                />
                             </View>
-
-                        </Modal>
-                        {warranty ? <Text style={{
-                            fontFamily: "Inter_500Medium",
-                            color: `${Colors.black}`,
-                            marginVertical: 6,
-                            textAlign: "center"
-                        }}>Unit is {warranty === "LP" ? "IW" : warranty}</Text> : ""}
-
-                        <View
-                            style={styles.textInputParent}
-                        >
-                            <TextInput
-                                placeholder='Item condition'
-                                placeholderTextColor={`${Colors.grey}`}
-                                style={styles.textInput}
-                                editable={true}
-                                value={itemCondition}
-                                onChangeText={e => setItemCondition(e)}
-                            />
-                        </View>
-                        <Pressable onPress={() => setDateModalVisible(true)}><Text style={{
-                            fontFamily: "Inter_500Medium",
-                            color: `${Colors.blue}`,
-                            marginVertical: 10
-                        }}>Purchase date</Text></Pressable>
-                        <Modal
-                            animationType="slide"
-                            transparent={true}
-                            visible={dateModalVisible}
-                            onRequestClose={() => {
-                                Alert.alert('Modal has been closed.');
-                                setDateModalVisible(!dateModalVisible);
-                            }}>
+                            <Text style={{
+                                fontFamily: "Inter_500Medium",
+                                marginTop: 8,
+                                color: `${Colors.black}`,
+                                textAlign: "center"
+                            }}>Only click here if you have your proof of purchase</Text>
                             <View style={{
-                                flex: 1,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginTop: 22,
+                                gap: 10,
+                                marginVertical: 14
                             }}>
+                                <CustomButton text="Date of purchase"
+                                    fontSize={14}
+                                    buttonBgColor={`${Colors.grey}`}
+                                    pressedButtonBgColor={`${Colors.black}`} onPress={() => setDateModalVisible(true)} />
+
+                            </View>
+                            <Modal
+                                animationType="slide"
+                                transparent={true}
+                                visible={dateModalVisible}
+                                onRequestClose={() => {
+                                    Alert.alert('Modal has been closed.');
+                                    setDateModalVisible(!dateModalVisible);
+                                }}>
                                 <View style={{
-                                    margin: 20,
-                                    backgroundColor: 'white',
-                                    borderRadius: 20,
-                                    padding: 35,
+                                    flex: 1,
+                                    justifyContent: 'center',
                                     alignItems: 'center',
-                                    shadowColor: '#000',
-                                    shadowOffset: {
-                                        width: 0,
-                                        height: 2,
-                                    },
-                                    shadowOpacity: 0.25,
-                                    shadowRadius: 4,
-                                    elevation: 5,
+                                    marginTop: 22,
                                 }}>
-                                    <DateTimePicker
-                                        mode="single"
-                                        date={purchaseDate}
-                                        onChange={(params) => setPurchaseDate(params?.date)}
-                                    />
-                                    <Pressable
+                                    <View style={{
+                                        margin: 20,
+                                        backgroundColor: 'white',
+                                        borderRadius: 20,
+                                        padding: 35,
+                                        alignItems: 'center',
+                                        shadowColor: '#000',
+                                        shadowOffset: {
+                                            width: 0,
+                                            height: 2,
+                                        },
+                                        shadowOpacity: 0.25,
+                                        shadowRadius: 4,
+                                        elevation: 5,
+                                    }}>
+                                        <DateTimePicker
+                                            mode="single"
+                                            date={purchaseDate}
+                                            onChange={(params) => setPurchaseDate(params?.date)}
+                                        />
+                                        <Pressable
 
-                                        onPress={() => setDateModalVisible(!dateModalVisible)}>
-                                        <Text>Close</Text>
-                                    </Pressable>
+                                            onPress={() => setDateModalVisible(!dateModalVisible)}>
+                                            <Text>Close</Text>
+                                        </Pressable>
+                                    </View>
                                 </View>
-                            </View>
-                        </Modal>
+                            </Modal>
 
 
-                        <CustomButton text="Create ticket"
-                            fontSize={14}
-                            buttonBgColor={`${Colors.lightBlue}`}
-                            pressedButtonBgColor={`${Colors.blue}`} onPress={createTicket} />
+                            <CustomButton text="Create ticket"
+                                fontSize={14}
+                                buttonBgColor={`${Colors.lightBlue}`}
+                                pressedButtonBgColor={`${Colors.blue}`} onPress={createTicket} />
 
-                    </View>
-                </ScrollView>
-            </Container>
+                        </View>
+                    </>
+                } />
+            </ScrollView>
+        </Container>
 
-        </>
+
     )
 }

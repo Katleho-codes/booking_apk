@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "booking_apk",
+    "name": "mm_all_allelectronics",
     "slug": "booking-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -24,6 +24,10 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "androidStatusBar": {
+        "hidden": "false",
+        "translucent": "true"
       },
       "package": "com.mm_all_allelectronics.mmallelectronics"
     },

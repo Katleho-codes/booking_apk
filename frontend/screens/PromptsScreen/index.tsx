@@ -6,7 +6,7 @@ import Animated, { FadeInLeft, FadeInRight, FadeOut } from 'react-native-reanima
 import CustomButton from '../../components/Button';
 import { Colors } from '../../utils/colors';
 import { styles } from "./style";
-
+import { StatusBar } from 'expo-status-bar';
 
 export default function PromptsScreen() {
     // Navigation hook
@@ -19,35 +19,39 @@ export default function PromptsScreen() {
         navigation.navigate("CustomerDetails")
     }
     return (
-        <View style={styles.centeredContainer}>
 
-            <Text style={styles.queryText}>Have you been here before?</Text>
-            <View style={{
-                gap: 10
-            }}>
+        <>
+            <StatusBar translucent={true} hidden={false} />
+            <View style={styles.centeredContainer}>
+
+                <Text style={styles.queryText}>Have you been here before?</Text>
                 <View style={{
-                    marginVertical: 8
+                    gap: 10
                 }}>
-                    <Animated.View entering={FadeInLeft} exiting={FadeOut}>
+                    <View style={{
+                        marginVertical: 8
+                    }}>
+                        <Animated.View entering={FadeInLeft} exiting={FadeOut}>
+                            <CustomButton
+                                onPress={GotoNext}
+                                text="Yes, I have"
+                                fontSize={14}
+                                buttonBgColor={`${Colors.lightBlue}`}
+                                pressedButtonBgColor={`${Colors.blue}`}
+                            />
+                        </Animated.View>
+                    </View>
+                    <Animated.View entering={FadeInRight} exiting={FadeOut}>
                         <CustomButton
-                            onPress={GotoNext}
-                            text="Yes, I have"
+                            onPress={GotoCustomerDetails}
+                            text="No, first time"
                             fontSize={14}
                             buttonBgColor={`${Colors.lightBlue}`}
                             pressedButtonBgColor={`${Colors.blue}`}
                         />
                     </Animated.View>
                 </View>
-                <Animated.View entering={FadeInRight} exiting={FadeOut}>
-                    <CustomButton
-                        onPress={GotoCustomerDetails}
-                        text="No, first time"
-                        fontSize={14}
-                        buttonBgColor={`${Colors.lightBlue}`}
-                        pressedButtonBgColor={`${Colors.blue}`}
-                    />
-                </Animated.View>
             </View>
-        </View>
+        </>
     )
 }

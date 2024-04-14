@@ -9,6 +9,8 @@ import useDebounce from '../../hooks/useDebounce';
 import { Colors } from '../../utils/colors';
 import { datetimestamp } from '../../utils/timezone';
 import { styles } from "./style";
+import { StatusBar } from 'expo-status-bar';
+
 
 // console.log(moment(new Date(
 //     Date.now() + 1000 * 60 * -new Date().getTimezoneOffset()
@@ -29,7 +31,7 @@ type TSearchCustomer = {
 
 export default function SearchCustomer() {
     const [searchCustomer, setSearchCustomer] = useState("");
-    const [result, setResult] = useState<TSearchCustomer[]>([]);
+    const [result, setResult] = useState<TSearchCustomer[] | any>([]);
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
     const [email, setEmail] = useState("");
@@ -57,7 +59,7 @@ export default function SearchCustomer() {
                     Authorization: `Bearer ${process.env.EXPO_PUBLIC_REPAIRSHOPR_BEARER_TOKEN}`
                 },
             })
-            if (data?.customers[0]?.email === searchCustomer) {
+            if (data?.customers[0]?.email || data?.customer[0]?.phone === searchCustomer) {
                 setResult(data?.customers)
                 setFirstname(data?.customers[0]?.firstname)
                 setLastname(data?.customers[0]?.lastname)
@@ -68,8 +70,6 @@ export default function SearchCustomer() {
                 setCity(data?.customers[0]?.city);
                 setState(data?.customers[0]?.state);
                 setZip(data?.customers[0]?.zip);
-
-
             }
         } catch (error) {
             // console.log("search repair customer error", error)
@@ -99,21 +99,24 @@ export default function SearchCustomer() {
         // await SecureStore.setItemAsync("email", searchCustomer);
         createEntry();
         navigation.navigate("DeviceInspection", {
-            email: searchCustomer,
+            email: email,
             customUUID: customUUID,
             firstname: firstname, lastname: lastname, phoneNumber: phoneNumber, address: address, address2: address2, city: city, state: state, zip: zip
         });
     }
 
     return (
+
+
         <View style={styles.searchCustomerContainer}>
+            <StatusBar translucent={true} hidden={false} />
             <View
 
             >
                 <Text
                     style={styles.searchCustomerInputLabel}
                 >
-                    Search using email
+                    Search email or phone number
                 </Text>
                 <TextInput
                     style={styles.searchCustomerInput}
@@ -128,7 +131,7 @@ export default function SearchCustomer() {
             </View>
             <View>
                 {
-                    result && (
+                    searchCustomer === result[0]?.email || searchCustomer === result[0]?.phone || searchCustomer === result[0]?.phone ? (
                         result.map((x) => (
                             <View
                                 key={x.id}
@@ -139,17 +142,28 @@ export default function SearchCustomer() {
                                 <Text
                                     style={styles.searchCustomerResultText}
                                 >
-                                    {x.email}
+                                    {x?.fullname}
+                                </Text>
+                                <Text
+                                    style={styles.searchCustomerResultText}
+                                >
+                                    {x?.email}
+                                </Text>
+                                <Text
+                                    style={styles.searchCustomerResultText}
+                                >
+                                    {x?.phone} {x?.mobile}
                                 </Text>
                             </View>
                         ))
-                    )
+                    ) : null
                 }
-                {result && <CustomButton text="Add customer"
+                {searchCustomer === result[0]?.email || searchCustomer === result[0]?.phone || searchCustomer === result[0]?.phone ? <CustomButton text="Add customer"
                     fontSize={14}
                     buttonBgColor={`${Colors.lightBlue}`}
-                    pressedButtonBgColor={`${Colors.blue}`} onPress={addExistingCustomer} />}
+                    pressedButtonBgColor={`${Colors.blue}`} onPress={addExistingCustomer} /> : null}
             </View>
         </View>
+
     )
 }

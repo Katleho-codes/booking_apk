@@ -43,7 +43,8 @@
     "react-native-tab-view": "^3.5.2",
     "react-native-ui-datepicker": "^2.0.2",
     "react-native-url-polyfill": "^2.0.0",
-    "expo-dev-client": "~3.3.11"
+    "expo-dev-client": "~3.3.11",
+    "expo-insights": "~0.6.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

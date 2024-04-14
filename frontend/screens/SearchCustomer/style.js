@@ -1,10 +1,14 @@
 import { StyleSheet } from "react-native";
 import { Colors } from "../../utils/colors";
+import { Platform } from "react-native";
+import { StatusBar } from "expo-status-bar";
 
 export const styles = StyleSheet.create({
   searchCustomerContainer: {
     flex: 1,
-    padding: 10,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    paddingHorizontal: 10,
+    paddingBottom: 10,
     backgroundColor: "#fff",
     justifyContent: "center",
     gap: 10,
@@ -13,7 +17,7 @@ export const styles = StyleSheet.create({
     fontFamily: "Inter_600SemiBold",
     color: `${Colors.black}`,
     paddingVertical: 4,
-    fontSize: 22,
+    fontSize: 18,
     textAlign: "center",
     marginVertical: 10,
   },

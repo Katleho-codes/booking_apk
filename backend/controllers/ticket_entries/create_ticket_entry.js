@@ -34,7 +34,7 @@ const addEntry = async (req, res) => {
     );
     res.status(200).json(newEntry.rows);
   } catch (error) {
-    // console.log("Create entry error", error);
+    console.log("Create entry error", error);
   }
 };
 export default addEntry;
